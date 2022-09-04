@@ -25,14 +25,31 @@
         color: #266BF9;
         text-decoration: none;
     }
+    @media (min-width : 576px)
+    {
+        .table_page {
+            overflow-x: scroll;
+        }
+    }
+    @media (min-width : 1250px)
+    {
+        .table_page {
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-xl {
+            min-width: 1250px !important;
+        }
+    }
 </style>
-
 <div class="main-wrapper">
     <!-- account area start -->
     <div class="account-dashboard pt-100px pb-100px">
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 col-md-3 col-lg-3 py-0">
+                <div class="col-sm-12 col-md-4 col-lg-3 py-0">
                     <!-- Nav tabs -->
                     <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
                         <ul role="tablist" class="nav flex-column dashboard-list">
@@ -51,7 +68,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-9 col-lg-9 px-0">
+                <div class="col-sm-12 col-md-8 col-lg-9 px-0">
                     <!-- Tab panes -->
                     <div class="tab-content dashboard_content" data-aos="fade-up" data-aos-delay="200">
                         <div class="tab-pane fade show active" id="account-details">
@@ -67,7 +84,7 @@
                                     <?= $this->Form->control('email',
                                         [
                                             'label' => false,
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'type' => 'email',
                                             'placeholder' => __('Email'),
                                             'aria-label' => __('Email'),
@@ -80,7 +97,7 @@
                                     <?= $this->Form->control('new-password',
                                         [
                                             'label' => false,
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'type' => 'password',
                                             'placeholder' => __('Password'),
                                             'aria-label' => __('Password'),
@@ -94,7 +111,7 @@
                                     <?= $this->Form->control('nome',
                                         [
                                             'label' => false,
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'type' => 'text',
                                             'placeholder' => __('Nome'),
                                             'aria-label' => __('Nome'),
@@ -108,7 +125,7 @@
                                         [
                                             'label' => false,
                                             'type' => 'text',
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'placeholder' => __('Sobrenome'),
                                             'aria-label' => __('Sobrenome'),
                                             'required' => true
@@ -122,7 +139,7 @@
                                             'label' => false,
                                             'type' => 'text',
                                             'id' => 'data_nascimento',
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'placeholder' => __('Data de Nascimento'),
                                             'aria-label' => __('Data de Nascimento'),
                                             'required' => true
@@ -135,7 +152,7 @@
                                         [
                                             'label' => false,
                                             'type' => 'text',
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'placeholder' => __('CPF'),
                                             'aria-label' => __('CPF'),
                                             'required' => true
@@ -148,7 +165,7 @@
                                         [
                                             'label' => false,
                                             'type' => 'select',
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'placeholder' => __('Gênero'),
                                             'aria-label' => __('Gênero'),
                                             'required' => true,
@@ -166,7 +183,7 @@
                                         [
                                             'label' => false,
                                             'type' => 'text',
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'placeholder' => __('Telefone'),
                                             'aria-label' => __('Telefone'),
                                         ]
@@ -178,7 +195,7 @@
                                         [
                                             'label' => false,
                                             'type' => 'text',
-                                            'class' => 'form-control w-50',
+                                            'class' => 'form-control',
                                             'placeholder' => __('Celular'),
                                             'aria-label' => __('Celular'),
                                             'required' => true
@@ -210,7 +227,7 @@
                         <div class="tab-pane fade" id="orders">
                             <h4>Compras</h4>
                             <div class="table_page table-responsive">
-                                <table>
+                                <table class="table">
                                     <thead>
                                         <tr>
                                             <th>Compras</th>
@@ -229,7 +246,7 @@
                                                 <td>R$ <?= number_format($sale->valor_final, 2, ',', '.') ?></td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
-                                                        <button href="#" class="view-sale btn btn-link">Ver</button>
+                                                        <button href="#" class="view-sale btn btn-link" data-toggle="modal" onclick="seeSale(<?= $sale->id ?>)" data-target=".bd-example-modal-xl">Ver</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -238,7 +255,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="address">
+                        <div class="tab-pane fade px-2" id="address">
                             <p>Os endereços a seguir também serão exibidos ​​na página de checkout.</p>
                             <?php if (!empty($endereco_padrao)): ?>
                                 <h5 class="billing-address mb-3">Endereço Padrão</h5>
@@ -260,18 +277,10 @@
                                 </address>
                             <?php endif; ?>
                             <div class="row pb-2">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="billing-address mb-3">Endereços</h5>
-                                    <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
-                                        <ul role="tablist" class="nav flex-column dashboard-list">
-                                            <a href="#add-address" data-bs-toggle="tab" class="btn-info cadastro-endereco nav-link">Cadastrar Endereço</a>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <h5 class="billing-address mb-3">Endereços Cadastrados</h5>                                    
                             </div>
-                            
-                            <div class="table_page table-responsive overflow-hidden">
-                                <table>
+                            <div class="table_page table-responsive">
+                                <table class="table">
                                     <thead>
                                         <tr>
                                             <th>CEP</th>
@@ -316,7 +325,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
+                            <div class="d-flex flex-row-reverse">
+                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                                    <a href="#add-address" data-bs-toggle="tab" class="btn btn-info p-2 p-md-2 text-nowrap cadastro-endereco nav-link">Cadastrar Endereço</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="add-address">
                             <h4>Cadastrar Endereço</h4>
@@ -446,6 +459,22 @@
     </div>
     <!-- account area end -->
 </div>
+<div class="modal fade sale-modal-xl" tabindex="-1" role="dialog" aria-labelledby="modalSeeSale" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-2"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger p-3 close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->Html->script(
     [
         '/js/plugins/datepicker/bootstrap-datepicker.min.js',
@@ -486,7 +515,110 @@
             $("#data_nascimento").val($("#data_nascimento").val());
             $("#data_nascimento").mask('00/00/0000');
         });
+        $('.view-sale').on('click', function () {
+            $('.bd-example-modal-xl').modal('show');
+        })
     });
+
+    function seeSale(sale_id) {
+        let sale = <?= json_encode($user->sales) ?>;
+        if (sale != null) {
+            $.each(sale, function(index, value) {
+                if (value.id == sale_id) {
+                    $('.modal-title').html('');
+                    $('.modal-title').html('Compra Número #' + value.id);
+
+                    let body = $('.modal-body');
+                    body.html('');
+                    let div_products = $('<div />', {
+                        class: 'p-3 table_page table-responsive'
+                    })
+                    let table_products = $('<table />', {
+                        class: "table"
+                    });
+                    let thead_products = '<thead>\
+                                            <tr>\
+                                                <th></th>\
+                                                <th>Nome</th>\
+                                                <th>Descrição</th>\
+                                                <th>Valor</th>\
+                                                <th>Loja/Vendedor</th>\
+                                            </tr>\
+                                        </thead>'
+                    table_products.append(thead_products);
+                    let tbody_products = $('<tbody />');
+                    
+                    $.each(value.user_requests, function(i, element) {
+                        if (element.product.store_id != null) {
+                            var vendedor = element.product.store;
+                        } else {
+                            var vendedor = element.product.user
+                        }
+                        let tr_tbody_product = `\<tr>\
+                                                    <td>${element.product.images}</td>\
+                                                    <td>${element.product.nome}</td>\
+                                                    <td>${element.product.descricao}</td>\
+                                                    <td>${(parseFloat(element.valor)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>\
+                                                    <td>${vendedor.nome}</td>\
+                                                </tr>`;
+                        tbody_products.append(tr_tbody_product);
+                    })
+                    let div_sales_data = $('<div />', {
+                        class: 'd-flex justify-content-between'
+                    })
+                    let div_cupom = $('<div />', {
+                        class: 'border rounded col-4 p-3'
+                    })
+                    if (value.cupom_id != null) {
+                        var has_cupom = true;
+                        if (value.cupon.tipo_desconto == 1) {
+                            var desconto = value.cupon.valor_real
+                            var valor_desconto = (value.valor - value.cupon.valor_real)
+                        } else {
+                            var desconto = `${value.cupon.valor_porcentagem}%`
+                            var valor_desconto = ((value.cupon.valor_porcentagem/100) * value.valor)
+                        }
+                        let div_interna_cupom = `<div class="text-center">
+                                                    <h6 class="text-center"><strong>Cupom</strong></h6><hr>
+                                                    <p><strong>Código do cupom utilizado</strong></p>
+                                                    <p class="text-danger">${value.cupon.codigo}</p>
+                                                    <p><strong>Desconto aplicado:</strong> ${desconto}</p>
+                                                </div>`;
+                        div_cupom.append(div_interna_cupom);
+                        div_sales_data.append(div_cupom);
+                    }
+                    let valor_parcelas = (value.valor_final/value.parcelas)
+                    let div_sale_values = $('<div />', {
+                        class: 'border rounded col-7 p-3'
+                    })
+                    let div_interna_sale_values = `<div class="text-center col-12">
+                                                        <h6 class="text-center"><strong>Dados da compra</strong></h6><hr>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="text-center col-6" style="border-right: 1px solid #DCDCDC;">
+                                                                <p><strong>Cartão:</strong> **** **** **** 1524</p>
+                                                                <p><strong>Parcelas:</strong> ${value.parcelas} x  ${valor_parcelas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </p>
+                                                                <p><strong>Status:</strong> ${value.liberado ? 'Liberado' : 'Não liberado'} </p>
+                                                            </div>
+                                                            <div class="text-center col-6">
+                                                                <p><strong>Subtotal:</strong> ${(parseFloat(value.valor)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>
+                                                                ${has_cupom ? `<p class="text-danger"><strong>Desconto:</strong> - ${(parseFloat(valor_desconto)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>` : '' }
+                                                                <p><strong>Total:</strong> ${(parseFloat(value.valor_final)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>`;
+                    div_sale_values.append(div_interna_sale_values);
+
+                    div_sales_data.append(div_sale_values);
+
+                    table_products.append(tbody_products);
+                    div_products.append(table_products);
+                    div_products.append(div_sales_data);
+                    body.append(div_products);
+                }
+            })
+        }
+        $('.sale-modal-xl').modal('show');
+    }
 
     function alteraUrl(nova){
         var Url = window.location.pathname;

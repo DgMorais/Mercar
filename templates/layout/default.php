@@ -44,9 +44,13 @@
     ) ?>
 </head>
 <body>
+    <!-- Header Start -->
     <?= $this->element('default/header') ?>
+    <!-- Header End -->
+
     <?= $this->Flash->render() ?>
     <?= $this->fetch('content') ?>
+    
     <!-- offcanvas overlay start -->
     <div class="offcanvas-overlay"></div>
     <!-- offcanvas overlay end -->
@@ -62,7 +66,11 @@
     <!-- OffCanvas Cart Start -->
     <?= $this->element('offcanvas/shopping_cart') ?>
     <!-- OffCanvas Cart End -->
+    
+    <!-- Footer Start -->
     <?= $this->element('default/footer') ?>
+    <!-- Footer End -->
+
     <?= $this->Html->script(
         [
             'main.js',

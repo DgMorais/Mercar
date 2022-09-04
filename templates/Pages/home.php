@@ -781,9 +781,6 @@
 <script>
     $(document).ready(function() {
         $('#modal-information').modal('show');
-        $('.close-modal').click(function() {
-            $('#modal-information').modal('hide');
-        })
     })
 </script>
 

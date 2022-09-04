@@ -2,21 +2,49 @@
     <button class="offcanvas-close"></button>
     <div class="user-panel">
         <ul>
-            <li><a href="tel:0123456789"><i class="fa fa-phone"></i> +55 (21) 3456-7899</a></li>
-            <li><a href="mailto:demo@example.com"><i class="fa fa-envelope-o"></i> demo@example.com</a></li>
-            <li><a href="my-account.html"><i class="fa fa-user"></i> Conta</a></li>
+            <li><a href="tel:2134567899"><i class="fa fa-phone"></i> 21 3456-7899</a></li>
+            <li><a href="mailto:mercar@yopmail.com"><i class="fa fa-envelope-o"></i> mercar@yopmail.com</a></li>
+            <?php if (!empty($user_logged)): ?>
+                <li>
+                    <?= $this->Html->link('<i class="fa fa-user"></i> Minha Conta',
+                        [
+                            'prefix' => 'cliente',
+                            'controller' => 'Users',
+                            'action' => 'myAccount'
+                        ],
+                        [
+                            'escapeTitle' => false
+                        ]
+                    ) ?>
+                </li>
+            <?php else: ?>
+                <li>
+                    <?= $this->Html->link('<i class="fa fa-user"></i> Login',
+                        [
+                            'controller' => 'Users',
+                            'action' => 'login'
+                        ],
+                        [
+                            'escapeTitle' => false
+                        ]
+                    ) ?>
+                </li>
+            <?php endif; ?>
         </ul>
     </div>
     <div class="inner customScroll">
         <div class="offcanvas-menu mb-4">
             <ul>
-                <li><a href="#"><span class="menu-text">Home</span></a>
-                    <ul class="sub-menu">
-                        <li><a href="index.html"><span class="menu-text">Home 1</span></a></li>
-                        <li><a href="index-2.html"><span class="menu-text">Home 2</span></a></li>
-                    </ul>
+                <li>
+                    <?= $this->Html->link('Home',
+                        '/'
+                    ) ?>
                 </li>
-                <li><a href="about.html">About</a></li>
+                <li>
+                    <?= $this->Html->link('Sobre',
+                        '#'
+                    ) ?>
+                </li>
                 <li>
                     <a href="#"><span class="menu-text">Pages</span></a>
                     <ul class="sub-menu">

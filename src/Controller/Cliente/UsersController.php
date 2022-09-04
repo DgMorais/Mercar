@@ -94,8 +94,16 @@ class UsersController extends AppController
             ->contain(
                 [
                     'Sales' => function ($q) {
-                        return $q->contain('UserRequests')
-                                ->order(['Sales.created' => 'DESC']);
+                        return $q->contain(
+                        [
+                            'UserRequests.Products' => function ($q) 
+                                {
+                                    return $q->contain('Users')
+                                        ->contain('Stores');
+                                }
+                        ])
+                        // ->contain('Cupons')
+                        ->order(['Sales.created' => 'DESC']);
                     }
                 ]
             )
