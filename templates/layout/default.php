@@ -22,7 +22,8 @@
             'venobox.css',
             'jquery-ui.min.css',
             'style.css',
-            'flash-notification.css'
+            'flash-notification.css',
+            'app.css'
         ]
     ) ?>
     <?= $this->Html->script(

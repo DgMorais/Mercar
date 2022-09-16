@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  * Stores Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\PrecosTable&\Cake\ORM\Association\HasMany $Precos
  * @property \App\Model\Table\ProductsTable&\Cake\ORM\Association\HasMany $Products
  *
  * @method \App\Model\Entity\Store newEmptyEntity()
@@ -49,13 +48,11 @@ class StoresTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Users', [
+        $this->hasMany('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('Precos', [
-            'foreignKey' => 'store_id',
-        ]);
+
         $this->hasMany('Products', [
             'foreignKey' => 'store_id',
         ]);
@@ -81,12 +78,6 @@ class StoresTable extends Table
             ->notEmptyString('nome');
 
         $validator
-            ->scalar('razao_social')
-            ->maxLength('razao_social', 300)
-            ->requirePresence('razao_social', 'create')
-            ->notEmptyString('razao_social');
-
-        $validator
             ->scalar('descricao')
             ->allowEmptyString('descricao');
 
@@ -101,9 +92,9 @@ class StoresTable extends Table
             ->allowEmptyString('cep');
 
         $validator
-            ->scalar('rua')
-            ->maxLength('rua', 500)
-            ->allowEmptyString('rua');
+            ->scalar('endereco')
+            ->maxLength('endereco', 500)
+            ->allowEmptyString('endereco');
 
         $validator
             ->integer('numero')
@@ -140,8 +131,8 @@ class StoresTable extends Table
             ->notEmptyString('status');
 
         $validator
-            ->scalar('images')
-            ->allowEmptyFile('images');
+            ->scalar('logo')
+            ->allowEmptyString('logo');
 
         return $validator;
     }

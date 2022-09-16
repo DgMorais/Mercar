@@ -76,7 +76,7 @@
                             <p>Do painel da sua conta. você pode facilmente verificar &amp; visualizar seus <strong>pedidos</strong>, gerenciar seus <strong>endereços</strong> e cobrança e <strong>editar sua senha e detalhes da conta</strong>.</p>
                             <?= $this->Form->create($user,
                                 [
-                                    'url' => ['controller' => 'Users', 'action' => 'edit', 'prefix' => 'cliente']
+                                    'url' => ['controller' => 'Users', 'action' => 'edit', 'prefix' => 'client']
                                 ]
                             ); ?>
                                 <div class="default-form-box mb-20">
@@ -295,7 +295,7 @@
                                         <?php foreach ($enderecos as $endereco) :?>
                                             <?= $this->Form->create(null,
                                                 [
-                                                    'url' => ['controller' => 'Users', 'action' => 'defineDefaultAddress', 'prefix' => 'cliente']
+                                                    'url' => ['controller' => 'Users', 'action' => 'defineDefaultAddress', 'prefix' => 'client']
                                                 ]
                                             ); ?>
                                                 <tr>
@@ -343,7 +343,7 @@
                             </div>
                             <?= $this->Form->create($add_endereco,
                                 [
-                                    'url' => ['controller' => 'Users', 'action' => 'addAddress', 'prefix' => 'cliente']
+                                    'url' => ['controller' => 'Users', 'action' => 'addAddress', 'prefix' => 'client']
                                 ]
                             ); ?>
                                 <div class="default-form-box mb-20">

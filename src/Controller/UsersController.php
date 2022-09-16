@@ -102,7 +102,13 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // If the user is logged in send them away.
         if ($result->isValid()) {
-            return $this->redirect(['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'cliente']);
+            if ($this->Authentication->getIdentity()->group_id == 1) {
+                return $this->redirect(['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'client']);
+            } else if ($this->Authentication->getIdentity()->group_id == 2) {
+                return $this->redirect(['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'seller']);
+            } else {
+                return $this->redirect(['controller' => 'Users', 'action' => 'panel', 'prefix' => 'admin']);
+            }
         }
         if ($this->request->is('post') && !$result->isValid()) {
             $this->Flash->error('Invalid username or password');

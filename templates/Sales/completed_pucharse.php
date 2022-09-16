@@ -79,7 +79,7 @@
         </div>
         <div class="d-flex flex-row-reverse px-4">
             <?= $this->Html->link('Acompanhar Pedido',
-                '/cliente/my-account?orders',
+                '/client/my-account?orders',
                 [
                     'class' => 'btn btn-primary px-4 py-3 my-4'
                 ]

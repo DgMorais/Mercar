@@ -60,6 +60,12 @@ class AppController extends Controller
         }
     }
 
+    public function afterFilter(EventInterface $event)
+    {
+        parent::afterFilter($event);
+        // dd($this->Authentication);
+    }
+
     // public function afterFilter(EventInterface $event)
     // {
 

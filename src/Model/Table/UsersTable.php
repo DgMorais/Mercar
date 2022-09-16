@@ -59,6 +59,11 @@ class UsersTable extends Table
         $this->hasMany('Sales', [
             'foreignKey' => 'user_id',
         ]);
+
+        $this->belongsTo('Stores', [
+            'foreignKey' => 'id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

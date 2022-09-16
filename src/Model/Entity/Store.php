@@ -11,11 +11,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property string $nome
- * @property string $razao_social
  * @property string|null $descricao
  * @property string|null $cnpj
  * @property string|null $cep
- * @property string|null $rua
+ * @property string|null $endereco
  * @property int|null $numero
  * @property string|null $complemento
  * @property string|null $bairro
@@ -23,11 +22,11 @@ use Cake\ORM\Entity;
  * @property string|null $estado
  * @property string $slug
  * @property bool $status
- * @property string|null $images
+ * @property string|null $logo
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\User[] $users
  * @property \App\Model\Entity\Preco[] $precos
  * @property \App\Model\Entity\Product[] $products
  */
@@ -45,11 +44,10 @@ class Store extends Entity
     protected $_accessible = [
         'user_id' => true,
         'nome' => true,
-        'razao_social' => true,
         'descricao' => true,
         'cnpj' => true,
         'cep' => true,
-        'rua' => true,
+        'endereco' => true,
         'numero' => true,
         'complemento' => true,
         'bairro' => true,
@@ -57,10 +55,10 @@ class Store extends Entity
         'estado' => true,
         'slug' => true,
         'status' => true,
-        'images' => true,
+        'logo' => true,
         'created' => true,
         'modified' => true,
-        'user' => true,
+        'users' => true,
         'precos' => true,
         'products' => true,
     ];

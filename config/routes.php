@@ -48,11 +48,20 @@ return static function (RouteBuilder $routes) {
         $builder->fallbacks();
     });
 
-    $routes->prefix('cliente', function (RouteBuilder $builder) {
-        $builder->connect('/my-account/*', ['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'cliente']);
-        $builder->connect('/edit', ['controller' => 'Users', 'action' => 'edit', 'prefix' => 'cliente']);
-        $builder->connect('/default-address', ['controller' => 'Users', 'action' => 'defineDefaultAddress', 'prefix' => 'cliente']);
-        $builder->connect('/add-address', ['controller' => 'Users', 'action' => 'addAddress', 'prefix' => 'cliente']);
+    $routes->prefix('client', function (RouteBuilder $builder) {
+        $builder->connect('/my-account', ['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'client']);
+        $builder->connect('/edit', ['controller' => 'Users', 'action' => 'edit', 'prefix' => 'client']);
+        $builder->connect('/default-address', ['controller' => 'Users', 'action' => 'defineDefaultAddress', 'prefix' => 'client']);
+        $builder->connect('/add-address', ['controller' => 'Users', 'action' => 'addAddress', 'prefix' => 'client']);
+
+        $builder->fallbacks(DashedRoute::class);
+    });
+
+    $routes->prefix('seller', function (RouteBuilder $builder) {
+        $builder->connect('/my-account', ['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'seller']);
+        $builder->connect('/edit', ['controller' => 'Users', 'action' => 'edit', 'prefix' => 'seller']);
+        $builder->connect('/new-store', ['controller' => 'Stores', 'action' => 'newStore', 'prefix' => 'seller']);
+        $builder->connect('/view-store/*', ['controller' => 'Stores', 'action' => 'view', 'prefix' => 'seller']);
 
         $builder->fallbacks(DashedRoute::class);
     });

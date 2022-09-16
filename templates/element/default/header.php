@@ -17,7 +17,7 @@
                                 <li>
                                     <?= $this->Html->link('<i class="fa fa-user"></i> Minha Conta',
                                         [
-                                            'prefix' => 'cliente',
+                                            'prefix' => $user_logged->group_name,
                                             'controller' => 'Users',
                                             'action' => 'myAccount'
                                         ],
@@ -30,6 +30,7 @@
                                 <li>
                                     <?= $this->Html->link('<i class="fa fa-user"></i> Login',
                                         [
+                                            'prefix' => false,
                                             'controller' => 'Users',
                                             'action' => 'login'
                                         ],
@@ -92,7 +93,7 @@
                         <?php if (!empty($user_logged)): ?>
                             <?= $this->Html->link('<i class="fa fa-user"></i>',
                                 [
-                                    'prefix' => 'cliente',
+                                    'prefix' => 'client',
                                     'controller' => 'Users',
                                     'action' => 'myAccount'
                                 ],

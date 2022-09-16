@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Cliente;
+namespace App\Controller\Client;
 
 use App\Controller\AppController;
 use Cake\I18n\FrozenTime;
@@ -140,7 +140,7 @@ class UsersController extends AppController
             $this->Users->Enderecos->updateSessionDeafultAddress($user);
             $this->Flash->success(__('Endereço padrão salvo com sucesso!'));
 
-            return $this->redirect('/cliente/my-account?address');
+            return $this->redirect('/client/my-account?address');
         }
     }
 
@@ -155,7 +155,7 @@ class UsersController extends AppController
             if ($this->Enderecos->save($endereco)) {
                 $this->Flash->success(__('The address has been saved.'));
 
-                return $this->redirect('/cliente/my-account?address');
+                return $this->redirect('/client/my-account?address');
             }
         }
     }

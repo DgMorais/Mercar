@@ -22,10 +22,6 @@ class CreateStoresTable extends AbstractMigration
             'limit' => 300,
             'null' => false,
         ])
-        ->addColumn('razao_social', 'string', [
-            'limit' => 300,
-            'null' => false,
-        ])
         ->addColumn('descricao', 'text', [
             'null' => true,
             'default' => null
@@ -40,7 +36,7 @@ class CreateStoresTable extends AbstractMigration
             'limit' => 9,
             'null' => true
         ])
-        ->addColumn('rua', 'string', [
+        ->addColumn('endereco', 'string', [
             'default' => null,
             'limit' => 500,
             'null' => true,
@@ -77,7 +73,7 @@ class CreateStoresTable extends AbstractMigration
             'default' => true,
             'null' => false
         ])
-        ->addColumn('images', 'text', [
+        ->addColumn('logo', 'text', [
             'default' => null,
             'null' => true
         ])

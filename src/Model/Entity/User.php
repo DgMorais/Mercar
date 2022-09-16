@@ -67,7 +67,7 @@ class User extends Entity
     ];
 
     protected $_virtual = [
-        'nome_completo',
+        'full_name',
         'group_name'
     ];
 
@@ -88,29 +88,22 @@ class User extends Entity
         }
     }
 
-    protected function _getNomeCompleto()
+    protected function _getFullName()
     {
         if (isset($this->_fields['nome']) && isset($this->_fields['sobrenome'])) {
             return $this->_fields['nome'] . ' ' . $this->_fields['sobrenome'];
         }
     }
 
-    protected function _setGroupId()
-    {
-        if ($this->isNew()) {
-            return $this->_fields['group_id'] = 1;
-        }
-    }
-
     protected function _getGroupName()
     {
-        if (isset($this->_fields['goup_id'])) {
-            if ($this->_fields['goup_id'] == 1) {
-                return 'Cliente';
-            } elseif ($this->_fields['goup_id'] == 2) {
-                return 'Vendedor';
-            } elseif ($this->_fields['goup_id'] == 3) {
-                return 'Administrador';
+        if (isset($this->_fields['group_id'])) {
+            if ($this->_fields['group_id'] == 1) {
+                return 'client';
+            } elseif ($this->_fields['group_id'] == 2) {
+                return 'seller';
+            } elseif ($this->_fields['group_id'] == 3) {
+                return 'admin';
             }
         }
     }
