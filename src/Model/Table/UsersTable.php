@@ -173,6 +173,14 @@ class UsersTable extends Table
         return $rules;
     }
 
+    public function beforeSave($event, $entity, $options)
+    {
+        if ($entity->isNew()) {
+            $entity->group_id = 1;
+            $entity->slug = preg_replace('/[ ]/', '-', strtolower($entity->nome . ' ' . $entity->sobrenome));
+        }
+    }
+
     public function findAuth(\Cake\ORM\Query $query, array $options)
     {
         return $query->where(['Users.status' => 1]);

@@ -168,8 +168,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         // Load the authenticators. Session should be first.
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
-            'fields' => $fields,
-            'loginUrl' => '/login',
+            'fields' => $fields
         ]);
 
         // Load identifiers

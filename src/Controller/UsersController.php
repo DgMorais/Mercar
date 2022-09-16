@@ -106,8 +106,6 @@ class UsersController extends AppController
                 return $this->redirect(['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'client']);
             } else if ($this->Authentication->getIdentity()->group_id == 2) {
                 return $this->redirect(['controller' => 'Users', 'action' => 'myAccount', 'prefix' => 'seller']);
-            } else {
-                return $this->redirect(['controller' => 'Users', 'action' => 'panel', 'prefix' => 'admin']);
             }
         }
         if ($this->request->is('post') && !$result->isValid()) {

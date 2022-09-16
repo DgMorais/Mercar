@@ -93,7 +93,7 @@
                         <?php if (!empty($user_logged)): ?>
                             <?= $this->Html->link('<i class="fa fa-user"></i>',
                                 [
-                                    'prefix' => 'client',
+                                    'prefix' => $user_logged->group_name,
                                     'controller' => 'Users',
                                     'action' => 'myAccount'
                                 ],
