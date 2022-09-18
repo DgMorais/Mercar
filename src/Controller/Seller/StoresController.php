@@ -30,7 +30,17 @@ class StoresController extends AppController
     {
         $store = $this->Stores->get($id);
 
-        $this->set(compact('store'));
+        $products = $this->Stores->Products->find()
+            ->where(
+                [
+                    'store_id' => $store->id
+                ]
+            )
+            ->contain('Precos');
+
+        $products = $this->paginate($products);
+
+        $this->set(compact('store', 'products'));
     }
 
     public function newStore()

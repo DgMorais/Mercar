@@ -59,11 +59,15 @@ class ProductsTable extends Table
         $this->hasOne('Precos', [
             'foreignKey' => 'product_id',
         ]);
-        $this->belongsTo('Categories', [
-            'foreignKey' => 'category_id',
+        $this->hasOne('Categories', [
+            'foreignKey' => 'id',
         ]);
         $this->hasMany('UserRequests', [
             'foreignKey' => 'product_id',
+        ]);
+        $this->belongsTo('Stores', [
+            'foreignKey' => 'store_id',
+            'joinType' => 'INNER',
         ]);
     }
 
@@ -133,7 +137,8 @@ class ProductsTable extends Table
             ->where(
                 [
                     "Products.nome REGEXP '{$values}'",
-                    'Products.status' => 1
+                    'Products.status' => 1,
+                    
                 ]
             )
             ->contain('Precos')

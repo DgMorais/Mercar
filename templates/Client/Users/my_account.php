@@ -54,6 +54,7 @@
                     <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
                         <ul role="tablist" class="nav flex-column dashboard-list">
                             <li><a href="#account-details" data-bs-toggle="tab" class="nav-link active" onclick="alteraUrl('')">Detalhes da Conta</a></li>
+                            <li><a href="#group" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('group')">Perfil da Conta</a></li>
                             <li> <a href="#orders" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('orders')">Compras</a></li>
                             <li><a href="#address" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('address')">Endereços</a></li>
                             </li>
@@ -223,6 +224,33 @@
                                     ); ?>
                                 </div>
                             <?= $this->Form->end(); ?>
+                        </div>
+                        <div class="tab-pane fade" id="group">
+                            <h4>Perfil</h4>
+                            <div>
+                                <p>Sua conta esta cadastrada como <strong>cliente</strong>. Caso queria mudar o perfil de sua conta para <strong>vendedor</strong>, clique em ler termos e condições de uso, leia atentamente as informações abaixo e prossiga para a mudaça de perfil clicando em <strong>alterar grupo do perfil</strong></p>
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <button class="btn btn-secondary py-2 px-4" id="read-terms-conditions">Ler Termos</button>
+                                    </div>
+                                </div>
+                                <div class="border rounded mt-3 p-3 terms-conditions">
+                                    <h3 class="text-center">Termos e Condições de Uso</h3>
+                                    <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pulvinar dui ante, ac tempus arcu lobortis quis. Vestibulum fermentum magna ut arcu laoreet molestie. Vivamus porta tellus et leo accumsan aliquam. Integer condimentum, est eget vestibulum cursus, dolor eros blandit erat, vel tristique libero neque auctor metus. Ut vel lobortis magna, vitae mattis nisl. Curabitur volutpat augue non neque egestas convallis. Nam auctor urna ut cursus tempus. Suspendisse et massa mauris.
+
+                                    Curabitur laoreet pellentesque ante, eget mollis nulla congue sit amet. Morbi aliquet dui euismod finibus gravida. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed at sem libero. Duis pellentesque, orci eu condimentum euismod, purus turpis pellentesque velit, at euismod est ligula nec dui. Fusce imperdiet dapibus varius. Fusce vitae ipsum vel elit cursus rutrum ut egestas ligula. Maecenas egestas enim dictum, sodales risus at, pulvinar velit. In ut egestas sapien, nec porta odio. Curabitur tempor eros vitae rhoncus dapibus. Praesent vel nulla eu odio scelerisque laoreet. Pellentesque quis scelerisque lectus, eu maximus augue. Nullam porta elit sed sapien efficitur pulvinar.
+
+                                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam hendrerit eleifend tempor. Pellentesque diam nibh, tempus et dui nec, condimentum placerat velit. Aenean mollis tincidunt diam, vitae molestie leo aliquet ut. Etiam eu sapien enim. Vivamus dictum, purus in bibendum tempor, mi urna eleifend ex, quis dignissim odio orci ornare libero. In congue in elit ut scelerisque. Sed vehicula iaculis diam eu consequat. Cras blandit ipsum in sagittis luctus. Nam sed rutrum dolor, ac rutrum quam. Duis quis orci aliquam, rhoncus metus ac, bibendum risus. Pellentesque at consequat tortor, tempus volutpat nunc. In eleifend eros ut rutrum luctus. Ut sodales pulvinar molestie.
+
+                                    Duis iaculis urna urna. Praesent viverra magna non pretium sollicitudin. Nullam scelerisque metus eget nisl tincidunt, et elementum augue posuere. Ut vulputate metus et pellentesque pulvinar. Curabitur cursus pulvinar gravida. In erat felis, convallis eget vehicula et, aliquam sit amet sem. Aliquam tincidunt leo id urna mattis, vitae elementum tortor placerat. Nam hendrerit quam a lorem lobortis porttitor. Curabitur aliquam eu sem ultricies vulputate. Aliquam fermentum auctor mi, sed ullamcorper justo auctor nec. Donec lacinia ultricies diam eu auctor. Integer fringilla lacinia orci, ut fringilla elit egestas id. Donec tempus tincidunt turpis, vitae accumsan orci euismod nec. Donec magna velit, pellentesque a felis a, condimentum dignissim turpis. Fusce suscipit justo sit amet mi tempor euismod. Donec ultrices, quam ut fringilla imperdiet, sapien est tristique nisl, sed hendrerit elit dui quis nibh.</p>
+                                </div>
+                                <?= $this->Html->link('Alterar grupo do perfil',
+                                    '#',
+                                    [
+                                        'class' => 'btn btn-primary mt-3 py-2'
+                                    ]
+                                ) ?>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="orders">
                             <h4>Compras</h4>
@@ -495,6 +523,11 @@
             $("#orders").addClass("show active");
             $("a[href='#account-details']").removeClass("active");
             $("a[href='#orders']").addClass("active");
+        } else if (url.match(regex) == '?group') {
+            $("#account-details").removeClass("show active");
+            $("#group").addClass("show active");
+            $("a[href='#account-details']").removeClass("active");
+            $("a[href='#group']").addClass("active");
         }
         $("#data_nascimento").mask('00/00/0000');
         $("#cep").mask('00000-000');
@@ -515,6 +548,10 @@
             $("#data_nascimento").val($("#data_nascimento").val());
             $("#data_nascimento").mask('00/00/0000');
         });
+        $('.terms-conditions').hide();
+        $('#read-terms-conditions').on('click', function() {
+            $('.terms-conditions').toggle("slow");
+        })
         $('.view-sale').on('click', function () {
             $('.bd-example-modal-xl').modal('show');
         })

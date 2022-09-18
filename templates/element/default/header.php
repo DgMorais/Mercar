@@ -152,6 +152,7 @@
                     <div class="search-element">
                         <?= $this->Form->create(null,
                             [
+                                'prefix' => 'false',
                                 'method' => 'get',
                                 'action' => '/shop'
                             ]
