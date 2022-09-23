@@ -59,8 +59,9 @@ class ProductsTable extends Table
         $this->hasOne('Precos', [
             'foreignKey' => 'product_id',
         ]);
-        $this->hasOne('Categories', [
-            'foreignKey' => 'id',
+        $this->belongsTo('Categories', [
+            'foreignKey' => 'category_id',
+            'joinType' => 'INNER',
         ]);
         $this->hasMany('UserRequests', [
             'foreignKey' => 'product_id',
@@ -68,6 +69,9 @@ class ProductsTable extends Table
         $this->belongsTo('Stores', [
             'foreignKey' => 'store_id',
             'joinType' => 'INNER',
+        ]);
+        $this->hasOne('ProductInformation', [
+            'foreignKey' => 'product_id',
         ]);
     }
 
@@ -144,8 +148,33 @@ class ProductsTable extends Table
             ->contain('Precos')
             ->contain('Users')
             ->contain('Stores')
+            ->contain('ProductInformation')
             ->contain('Categories');
 
         return $products;
+    }
+
+    public function addNewProduct($request, $image, $user, $store)
+    {        
+        $request['user_id'] = $user->id;
+        $request['store_id'] = $store->id;
+        if (empty($store)) {
+            $request['slug'] = "{$user->id}-" . preg_replace('/[ ]/', '-', strtolower($request['nome']));;
+        } else {
+            $request['slug'] = "{$user->id}-{$store->slug}-" . preg_replace('/[ ]/', '-', strtolower($request['nome']));;
+        }
+        $request['images'] = json_encode($image);
+
+        $request['preco']['preco_por'] = $request['preco']['preco_por'] = str_replace(',', '.', str_replace('.', '', str_replace('R$ ', '', $request['preco']['preco_por'])));
+        $request['preco']['status'] = true;
+
+        $request['product_information']['weight'] = preg_replace('/[^0-9]/', '', $request['product_information']['weight']);
+        
+        $new_product = $this->newEntity($request, ['contain' => ['Precos', 'ProductInformation']]);
+        if ($this->save($new_product, ['associated' => ['Precos', 'ProductInformation']])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

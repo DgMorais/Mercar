@@ -28,6 +28,7 @@ class StoresController extends AppController
 
     public function view($id = null)
     {
+        $user_logged = $this->Authentication->getIdentity();
         $store = $this->Stores->get($id);
 
         $products = $this->Stores->Products->find()
@@ -40,7 +41,7 @@ class StoresController extends AppController
 
         $products = $this->paginate($products);
 
-        $this->set(compact('store', 'products'));
+        $this->set(compact('store', 'products', 'user_logged'));
     }
 
     public function newStore()

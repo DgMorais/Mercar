@@ -13,6 +13,11 @@ use App\Controller\AppController;
  */
 class ProductsController extends AppController
 {
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('UploaderToS3');
+    }
     /**
      * Index method
      *
@@ -49,8 +54,9 @@ class ProductsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id = null)
     {
+        $user_logged = $this->Authentication->getIdentity();
         $product = $this->Products->newEmptyEntity();
         $categories = $this->Products->Categories->find()->toArray();
 
@@ -58,17 +64,23 @@ class ProductsController extends AppController
             $list_category[$categorie->id] = $categorie->nome;
         }
 
+        $store = $this->Products->Stores->get($id);
+
         if ($this->request->is('post')) {
-            $product = $this->Products->patchEntity($product, $this->request->getData());
-
-            if ($this->Products->save($product)) {
-                $this->Flash->success(__('The product has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            $attachment = $this->request->getData('images');
+            $upload = $this->UploaderToS3->upload(
+                $attachment,
+                $this->Products,
+                "uploads/products/{$store->id}/",
+                'images'
+            );
+            if ($upload) {
+                if ($this->Products->addNewProduct($this->request->getData(), $upload, $user_logged, $store)) {
+                    return $this->redirect(['controller' => 'Stores', 'action' => 'view', 'prefix' => 'seller', $store->id]);
+                }
             }
-            $this->Flash->error(__('The product could not be saved. Please, try again.'));
         }
-        $this->set(compact('product', 'list_category'));
+        $this->set(compact('product', 'list_category', 'store'));
     }
 
     /**

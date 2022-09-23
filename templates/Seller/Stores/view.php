@@ -4,17 +4,23 @@
         filter: invert(100%);
     }
     #carouselControls {
-        width: 15%;
+        width: 18%;
         min-height: 160px;
         max-height: 160px;
     }
     .list-group-item {
         height: 180px;
     }
-    .image-not-found {
-        width: 15%;
-        min-height: 160px;
-        max-height: 160px;
+    .image-not-found, .image-product {
+        width: 18%;
+        min-height: 140px;
+        max-height: 140px;
+    }
+    #product-description {
+        white-space: nowrap; 
+        width: 40em; 
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
 <div class="main-wrapper">
@@ -43,7 +49,7 @@
         <div id="products-list">
             <div class="d-flex flex-row-reverse mt-2">
                 <?= $this->Html->link('Adicionar Produto',
-                    ['controller' => 'Products', 'action' => 'add', 'prefix' => 'seller'],
+                    ['controller' => 'Products', 'action' => 'add', 'prefix' => 'seller', $store->id],
                     [
                         'class' => 'btn btn-primary py-3 px-4'
                     ]
@@ -61,7 +67,8 @@
                                                     <div class="carousel-item">
                                                         <?= $this->Html->image($image,
                                                             [
-                                                                'class' => 'd-block w-100'
+                                                                'pathPrefix' => "/mercar/img/uploads/products/{$store->id}/",
+                                                                'class' => 'image-product w-100'
                                                             ]
                                                         ) ?>
                                                     </div>
@@ -78,7 +85,7 @@
                                     <div class="d-flex w-100">
                                         <div class="w-100 h-100">
                                             <h5 class="mb-1"><?= $product->nome ?></h5>
-                                            <small><?= $product->descricao ?></small>
+                                            <p id="product-description"><small><?= $product->descricao ?></small></p>
                                         </div>
                                         <div class="d-flex align-items-end flex-column align-content-between" style="width: 50%;">
                                             <div class="d-flex flex-row-reverse self-start">
@@ -150,7 +157,10 @@
 </div>
 <script>
     $(document).ready(function(){
-        document.querySelectorAll('.carousel-item')[0].classList.add('active');
+        document.querySelectorAll('.list-group-item > div > #carouselControls > .carousel-inner').forEach((element, i) => {
+            var childrens = Array.from(element.children)
+            childrens[0].classList.add("active");
+        })
         $('.carousel').carousel();
     })
 </script>

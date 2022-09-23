@@ -47,10 +47,7 @@ class PrecosTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Products', [
-            'foreignKey' => 'product_id',
-            'joinType' => 'INNER',
-        ]);
+        $this->hasOne('Products');
     }
 
     /**
@@ -63,7 +60,6 @@ class PrecosTable extends Table
     {
         $validator
             ->integer('product_id')
-            ->requirePresence('product_id', 'create')
             ->notEmptyString('product_id');
 
         $validator

@@ -20,12 +20,12 @@ class CreatePrecosTable extends AbstractMigration
             ])
             ->addColumn('preco_de', 'decimal', [
                 'null' => true,
-                'precision' => 10,
+                'precision' => 20,
                 'scale' => 2,
             ])
             ->addColumn('preco_por', 'decimal', [
                 'null' => false,
-                'precision' => 10,
+                'precision' => 20,
                 'scale' => 2,
             ])
             ->addColumn('status', 'boolean', [

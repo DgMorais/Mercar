@@ -42,10 +42,15 @@ class Product extends Entity
         'slug' => true,
         'status' => true,
         'images' => true,
+        'category_id' => true,
+        'max_parcelas' => true,
+        'quantity' => true,
+        'product_information_id' => true,
         'created' => true,
         'modified' => true,
         'user' => true,
         'store' => true,
         'preco' => true,
+        'product_information' => true
     ];
 }

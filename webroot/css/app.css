@@ -1,14 +1,4 @@
-.app {
-  background: grey;
-}
-
-.input-logo {
-  padding: 10px 10px;
+.swiper {
   width: 100%;
-  background-color: #252525;
-  color: #fff !important;
-  text-transform: uppercase;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
+  height: 600px;
 }
