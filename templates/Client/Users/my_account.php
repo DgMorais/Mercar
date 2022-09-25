@@ -244,7 +244,7 @@
 
                                     Duis iaculis urna urna. Praesent viverra magna non pretium sollicitudin. Nullam scelerisque metus eget nisl tincidunt, et elementum augue posuere. Ut vulputate metus et pellentesque pulvinar. Curabitur cursus pulvinar gravida. In erat felis, convallis eget vehicula et, aliquam sit amet sem. Aliquam tincidunt leo id urna mattis, vitae elementum tortor placerat. Nam hendrerit quam a lorem lobortis porttitor. Curabitur aliquam eu sem ultricies vulputate. Aliquam fermentum auctor mi, sed ullamcorper justo auctor nec. Donec lacinia ultricies diam eu auctor. Integer fringilla lacinia orci, ut fringilla elit egestas id. Donec tempus tincidunt turpis, vitae accumsan orci euismod nec. Donec magna velit, pellentesque a felis a, condimentum dignissim turpis. Fusce suscipit justo sit amet mi tempor euismod. Donec ultrices, quam ut fringilla imperdiet, sapien est tristique nisl, sed hendrerit elit dui quis nibh.</p>
                                 </div>
-                                <?= $this->Html->link('Alterar grupo do perfil',
+                                <?= $this->Html->link('Alterar perfil da conta',
                                     [
                                         'controller' => 'Users',
                                         'action' => 'changeProfileSeller',
