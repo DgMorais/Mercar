@@ -32,6 +32,9 @@ use App\Model\Table\Groups;
  */
 class GroupsTable extends Table
 {
+    public const USER_CLIENT = 1;
+    public const USER_SELLER = 2;
+    public const USER_ADMIN = 3;
     /**
      * Initialize method
      *

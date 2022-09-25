@@ -5,6 +5,7 @@ namespace App\Controller\Client;
 
 use App\Controller\AppController;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -157,6 +158,34 @@ class UsersController extends AppController
 
                 return $this->redirect('/client/my-account?address');
             }
+        }
+    }
+
+    public function changeProfileSeller()
+    {
+        $this->Groups = TableRegistry::getTableLocator()->get('Groups');
+        $user_logged = $this->Authentication->getIdentity();
+        $user = $this->Users->get($user_logged->id);
+        $user->group_id = $this->Groups::USER_SELLER;
+        if ($this->Users->save($user)) {
+            $this->Authentication->setIdentity($user);
+            $this->Flash->success(__('The user group has been updated.'));
+            return $this->redirect(
+                [
+                    'controller' => 'Users',
+                    'action' => 'myAccount',
+                    'prefix' => 'seller'
+                ]
+            );
+        } else {
+            $this->Flash->warning(__('Fail to the update user group.'));
+            return $this->redirect(
+                [
+                    'controller' => 'Users',
+                    'action' => 'myAccount',
+                    'prefix' => 'client'
+                ]
+            );
         }
     }
 }

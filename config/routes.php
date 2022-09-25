@@ -53,6 +53,7 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/edit', ['controller' => 'Users', 'action' => 'edit', 'prefix' => 'client']);
         $builder->connect('/default-address', ['controller' => 'Users', 'action' => 'defineDefaultAddress', 'prefix' => 'client']);
         $builder->connect('/add-address', ['controller' => 'Users', 'action' => 'addAddress', 'prefix' => 'client']);
+        $builder->connect('/change-profile-seller', ['controller' => 'Users', 'action' => 'changeProfileSeller', 'prefix' => 'client']);
 
         $builder->fallbacks(DashedRoute::class);
     });

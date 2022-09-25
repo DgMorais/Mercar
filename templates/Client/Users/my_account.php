@@ -245,9 +245,14 @@
                                     Duis iaculis urna urna. Praesent viverra magna non pretium sollicitudin. Nullam scelerisque metus eget nisl tincidunt, et elementum augue posuere. Ut vulputate metus et pellentesque pulvinar. Curabitur cursus pulvinar gravida. In erat felis, convallis eget vehicula et, aliquam sit amet sem. Aliquam tincidunt leo id urna mattis, vitae elementum tortor placerat. Nam hendrerit quam a lorem lobortis porttitor. Curabitur aliquam eu sem ultricies vulputate. Aliquam fermentum auctor mi, sed ullamcorper justo auctor nec. Donec lacinia ultricies diam eu auctor. Integer fringilla lacinia orci, ut fringilla elit egestas id. Donec tempus tincidunt turpis, vitae accumsan orci euismod nec. Donec magna velit, pellentesque a felis a, condimentum dignissim turpis. Fusce suscipit justo sit amet mi tempor euismod. Donec ultrices, quam ut fringilla imperdiet, sapien est tristique nisl, sed hendrerit elit dui quis nibh.</p>
                                 </div>
                                 <?= $this->Html->link('Alterar grupo do perfil',
-                                    '#',
                                     [
-                                        'class' => 'btn btn-primary mt-3 py-2'
+                                        'controller' => 'Users',
+                                        'action' => 'changeProfileSeller',
+                                        'prefix' => 'client'
+                                    ],
+                                    [
+                                        'class' => 'btn btn-primary mt-3 py-2',
+                                        'id' => 'change-profile'
                                     ]
                                 ) ?>
                             </div>
@@ -418,7 +423,7 @@
                                         [
                                             'label' => false,
                                             'type' => 'text',
-                                            'id' => 'data_nascimento',
+                                            'id' => 'complemento',
                                             'class' => 'form-control w-50',
                                             'placeholder' => __('Complemento'),
                                             'aria-label' => __('Complemento'),
@@ -529,6 +534,7 @@
             $("a[href='#account-details']").removeClass("active");
             $("a[href='#group']").addClass("active");
         }
+        $('#change-profile').addClass('disabled');
         $("#data_nascimento").mask('00/00/0000');
         $("#cep").mask('00000-000');
         $("[name=cpf]").mask('000.000.000-00');
@@ -554,6 +560,9 @@
         })
         $('.view-sale').on('click', function () {
             $('.bd-example-modal-xl').modal('show');
+        })
+        $('#read-terms-conditions').on('click', function() {
+            $('#change-profile').removeClass('disabled')
         })
     });
 
