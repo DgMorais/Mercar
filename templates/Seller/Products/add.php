@@ -2,6 +2,86 @@
     input {
         padding-right: 5px !important;
     }
+    .swiper {
+        width: auto;
+        height: auto;
+    }
+    input[type=file]::-webkit-file-upload-button {
+        border-radius: 5px 0 0 5px;
+        background: #266BF9;
+        padding: 14px;
+        padding-right: 15px;
+        padding-left: 25px;
+        color: #FFF;
+    }
+    .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
+        background-color: #252525
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+    .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .swiper {
+        width: 100%;
+        height: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .swiper-slide {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .swiper-one {
+        height: 80%;
+        width: 100%;
+    }
+
+    .swiper-two {
+        height: 20%;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+
+    .swiper-two .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.4;
+    }
+
+    .swiper-two .swiper-slide-thumb-active {
+        opacity: 1;
+    }
+
+    .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 </style>
 <div class="main-wrapper">
     <div class="container p-2">
@@ -16,72 +96,37 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-sm-12 col-xs-12 mb-lm-30px mb-md-30px mb-sm-30px">
-                            <div class="swiper-container zoom-top">
+                            <div>
                                 <?= $this->Form->control('images',
                                     [
                                         'label' => [
-                                            'text' => $this->Html->image('product-image/zoom-image/1.webp',
-                                                [
-                                                    'class' => 'img-responsive m-auto'
-                                                ]
-                                            ),
-                                            'class' => 'text-primary border rounded w-100 m-0 p-0',
+                                            'text' => 'Carregue as imagens do produto',
+                                            'class' => 'text-primary w-100 m-0 p-0',
                                             'for' => "form-img-file",
                                             'escape' => false,
                                             'role' => 'button'
                                         ],
-                                        'name' => 'images[]', 
+                                        'name' => 'images[]',
                                         'multiple' => 'multiple',
                                         'type' => 'file',
-                                        'class' => 'form-control form-control-lg d-none w-100',
-                                        'placeholder' => 'Titulo do Produto',
+                                        'style' => 'padding: 5px;',
+                                        'class' => 'form-control',
+                                        'onChange' => 'showImages()', 
                                         'required' => true
                                     ]
                                 ) ?>
                             </div>
-                            <div class="swiper-container mt-20px zoom-thumbs slider-nav-style-1 small-nav">
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <?= $this->Html->image('product-image/small-image/1.webp',
-                                            [
-                                                'class' => 'img-responsive m-auto'
-                                            ]
-                                        )?>
+                            <div class="load-images d-none">
+                                <div class="swiper-slider-container swiper swiper-one swiper-container mt-20px zoom-thumbs slider-nav-style-1 small-nav">
+                                    <div class="swiper-wrapper">
                                     </div>
-                                    <div class="swiper-slide">
-                                        <?= $this->Html->image('product-image/small-image/2.webp',
-                                            [
-                                                'class' => 'img-responsive m-auto'
-                                            ]
-                                        )?>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <?= $this->Html->image('product-image/small-image/3.webp',
-                                            [
-                                                'class' => 'img-responsive m-auto'
-                                            ]
-                                        )?>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <?= $this->Html->image('product-image/small-image/4.webp',
-                                            [
-                                                'class' => 'img-responsive m-auto'
-                                            ]
-                                        )?>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <?= $this->Html->image('product-image/small-image/5.webp',
-                                            [
-                                                'class' => 'img-responsive m-auto'
-                                            ]
-                                        )?>
+                                    <!-- Add Arrows -->
+                                    <div class="swiper-buttons">
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
                                     </div>
                                 </div>
-                                <!-- Add Arrows -->
-                                <div class="swiper-buttons">
-                                    <div class="swiper-button-next"></div>
-                                    <div class="swiper-button-prev"></div>
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
@@ -269,6 +314,7 @@
     </div>
 </div>
 <?= $this->Html->script('jquery.maskMoney.min') ?>
+<?= $this->Html->script('lory.min') ?>
 <script>
     $(document).ready(function() {
         var preco = $('#preco-preco-por');
@@ -299,4 +345,64 @@
             }
         })
     })
+
+    function showImages() {
+        var input = document.getElementById('images')
+        if (input.files.length != 0) {
+            readUrl(input, $('#main-image'), 0);
+            for (i=0; i<=input.files.length; i++) {
+                let wrapper = $('.swiper-slider-container').children('.swiper-wrapper')
+                let wrapper_two = $('.swiper-slider-container-two').children('.swiper-wrapper')
+                let div_slide = $('<div />', {
+                    class: 'swiper-slide'
+                });
+                let div_slide_two = $('<div />', {
+                    class: 'swiper-slide'
+                });
+                let img_slide = $('<img />', {
+                    class: 'img-responsive m-auto',
+                    style: 'width: 500px;',
+                });
+                let img_slide_two = $('<img />', {
+                    class: 'img-responsive m-auto',
+                    style: 'width: 180px;',
+                });
+                if (i == 0) {
+                    div_slide.addClass('swiper-slide-active');
+                    div_slide_two.addClass('swiper-slide-active');
+                }
+                readUrl(input, img_slide, i);
+                readUrl(input, img_slide_two, i);
+                let last_element = wrapper.children().last();
+                div_slide.append(img_slide)
+                div_slide_two.append(img_slide_two)
+                wrapper.append(div_slide)
+                wrapper_two.append(div_slide_two)
+                $('.load-images').removeClass('d-none');
+            }
+            const swiper = new Swiper('.swiper-one', {
+                // Optional parameters
+                direction: 'horizontal',
+                spaceBetween: 5,
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+
+                thumbs: {
+                    swiper: swiper,
+                },
+            });
+        }
+    }
+
+    function readUrl(input, tag, image) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            tag.attr('src', e.target.result)
+        };
+        reader.readAsDataURL(input.files[image]);
+    }
 </script>

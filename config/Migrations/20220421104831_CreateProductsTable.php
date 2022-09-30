@@ -23,14 +23,13 @@ class CreateProductsTable extends AbstractMigration
                 'null' => true
             ])
             ->addColumn('nome', 'string', [
-                'limit' => 250,
+                'limit' => 1000,
                 'null' => false,
             ])
             ->addColumn('descricao', 'text', [
                 'null' => false
             ])
-            ->addColumn('slug', 'string', [
-                'limit' => 100,
+            ->addColumn('slug', 'text', [
                 'null' => false
             ])
             ->addColumn('status', 'boolean', [

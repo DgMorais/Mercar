@@ -94,7 +94,6 @@ class ProductsTable extends Table
 
         $validator
             ->scalar('nome')
-            ->maxLength('nome', 250)
             ->requirePresence('nome', 'create')
             ->notEmptyString('nome');
 
@@ -105,7 +104,6 @@ class ProductsTable extends Table
 
         $validator
             ->scalar('slug')
-            ->maxLength('slug', 100)
             ->requirePresence('slug', 'create')
             ->notEmptyString('slug');
 
