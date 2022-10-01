@@ -126,7 +126,6 @@
                                         <div class="swiper-button-prev"></div>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
@@ -314,7 +313,6 @@
     </div>
 </div>
 <?= $this->Html->script('jquery.maskMoney.min') ?>
-<?= $this->Html->script('lory.min') ?>
 <script>
     $(document).ready(function() {
         var preco = $('#preco-preco-por');

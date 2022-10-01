@@ -67,19 +67,35 @@
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                         <div class="thumb">
-                                                            <a href=<?= "/products/{$product->slug}" ?> class="image">
+                                                            <?php if (!empty($product->images)) : ?>
+                                                                <div class="swiper" style="height: 250px;">
+                                                                    <!-- Additional required wrapper -->
+                                                                    <div class="swiper-wrapper">
+                                                                        <!-- Slides -->
+                                                                        <?php foreach (json_decode($product->images) as $image) : ?>
+                                                                            <div class="swiper-slide d-flex">
+                                                                                <?= $this->Html->image($image,
+                                                                                    [
+                                                                                        'pathPrefix' => "/mercar/img/uploads/products/{$product->store->id}/",
+                                                                                        'class' => 'img-responsive m-auto w-100',
+                                                                                        'style' => 'height: 200px; max-height: 600px;'
+                                                                                    ]
+                                                                                )?>
+                                                                            </div>
+                                                                        <?php endforeach; ?>
+                                                                    </div>
+
+                                                                    <!-- If we need navigation buttons -->
+                                                                    <div class="swiper-button-prev"></div>
+                                                                    <div class="swiper-button-next"></div>
+                                                                </div>
+                                                            <?php else : ?>
                                                                 <?= $this->Html->image('product-image/1.webp',
                                                                     [
                                                                         'alt' => 'Produto'
                                                                     ]
                                                                 )?>
-                                                                <?= $this->Html->image('product-image/1.webp',
-                                                                    [
-                                                                        'class' => 'hover-image',
-                                                                        'alt' => 'Produto'
-                                                                    ]
-                                                                )?>
-                                                            </a>
+                                                            <?php endif; ?>
                                                         </div>
                                                         <div class="content">
                                                             <span class="category"><a href="#"><?= $product->category->nome ?></a></span>
@@ -318,3 +334,26 @@
         ]
     ) ?>
 <?php endif; ?>
+<?=$this->Html->script('swiper-bundle.min')?>
+<script>
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        slidesPerView: 1,
+        loop: true,
+        direction: 'horizontal',
+        loop: true,
+        loopFillGroupWithBlank: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+</script>
