@@ -129,19 +129,35 @@
                                                     <div class="col-md-5 col-lg-5 col-xl-4 mb-lm-30px">
                                                         <div class="product">
                                                             <div class="thumb">
-                                                                <a href="single-product.html" class="image">
+                                                                <?php if (!empty($product->images)) : ?>
+                                                                    <div class="swiper" style="height: 250px;">
+                                                                        <!-- Additional required wrapper -->
+                                                                        <div class="swiper-wrapper">
+                                                                            <!-- Slides -->
+                                                                            <?php foreach (json_decode($product->images) as $image) : ?>
+                                                                                <div class="swiper-slide d-flex">
+                                                                                    <?= $this->Html->image($image,
+                                                                                        [
+                                                                                            'pathPrefix' => "/mercar/img/uploads/products/{$product->store->id}/",
+                                                                                            'class' => 'img-responsive m-auto w-100',
+                                                                                            'style' => 'height: 200px; max-height: 600px;'
+                                                                                        ]
+                                                                                    )?>
+                                                                                </div>
+                                                                            <?php endforeach; ?>
+                                                                        </div>
+
+                                                                        <!-- If we need navigation buttons -->
+                                                                        <div class="swiper-button-prev"></div>
+                                                                        <div class="swiper-button-next"></div>
+                                                                    </div>
+                                                                <?php else : ?>
                                                                     <?= $this->Html->image('product-image/1.webp',
                                                                         [
                                                                             'alt' => 'Produto'
                                                                         ]
                                                                     )?>
-                                                                    <?= $this->Html->image('product-image/1.webp',
-                                                                        [
-                                                                            'class' => 'hover-image',
-                                                                            'alt' => 'Produto'
-                                                                        ]
-                                                                    )?>
-                                                                </a>
+                                                                <?php endif; ?>
                                                                 <?php if(!empty($product->preco->preco_de) || $product->created->format('Y-m') == $now): ?>
                                                                     <span class="badges">
                                                                     <?php if(!empty($product->preco->preco_de)): ?>
@@ -172,7 +188,7 @@
                                                                 <?php if (!empty($product->preco->preco_de)): ?>
                                                                     <span class="old"><?= $product->preco->preco_de ?></span>
                                                                 <?php endif; ?>
-                                                                <span class="new"><?= $product->preco->preco_por ?></span>
+                                                                    <span class="new">R$ <?= number_format($product->preco->preco_por, 2, ',', '.') ?></span>
                                                                 </span>
                                                                 <div class="actions">
                                                                     <button title="Adicionar ao Carrinho" class="action add-to-cart" data-bs-toggle="modal" data-bs-target=<?= "#modalCart" . $product->id ?>><i class="pe-7s-shopbag"></i></button>
