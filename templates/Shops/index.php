@@ -1,3 +1,7 @@
+<?php 
+    use Cake\Chronos\Chronos;
+    $now = Chronos::now();
+?>
 <div class="main-wrapper">
     <!-- Shop Page Start  -->
     <div class="shop-category-area pt-100px pb-100px">
@@ -53,7 +57,7 @@
                                                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-30px">
                                                     <!-- Single Prodect -->
                                                     <div class="product">
-                                                        <?php if(!empty($product->preco->preco_de) || $product->created->format('Y-m') == $now): ?>
+                                                        <?php if(!empty($product->preco->preco_de) || $product->created->format('Y-m') == $now->format('Y-m')): ?>
                                                             <span class="badges">
                                                             <?php if(!empty($product->preco->porcentagem_desconto)): ?>
                                                                 <span class="sale">-<?= $product->preco->porcentagem_desconto ?>%</span>
@@ -86,7 +90,7 @@
                                                                 <?php if (!empty($product->preco->preco_de)): ?>
                                                                     <span class="old"><?= $product->preco->preco_de ?></span>
                                                                 <?php endif; ?>
-                                                            <span class="new"><?= $product->preco->preco_por ?></span>
+                                                            <span class="new">R$ <?= number_format($product->preco->preco_por, 2, ',', '.') ?></span>
                                                             </span>
                                                         </div>
                                                         <div class="actions">
