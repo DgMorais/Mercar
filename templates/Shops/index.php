@@ -58,12 +58,12 @@
                                                     <!-- Single Prodect -->
                                                     <div class="product">
                                                         <?php if(!empty($product->preco->preco_de) || $product->created->format('Y-m') == $now->format('Y-m')): ?>
-                                                            <span class="badges">
+                                                            <span class="badges" style="z-index: 99;">
                                                             <?php if(!empty($product->preco->porcentagem_desconto)): ?>
-                                                                <span class="sale" style="z-index: 99;>-<?= $product->preco->porcentagem_desconto ?>%</span>
+                                                                <span class="sale">-<?= $product->preco->porcentagem_desconto ?>%</span>
                                                             <?php endif; ?>
                                                             <?php if ($product->created->format('Y-m')): ?>
-                                                                <span class="new" style="z-index: 99;">Novo</span></span>
+                                                                <span class="new">Novo</span></span>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                         <div class="thumb">
