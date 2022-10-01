@@ -60,10 +60,10 @@
                                                         <?php if(!empty($product->preco->preco_de) || $product->created->format('Y-m') == $now->format('Y-m')): ?>
                                                             <span class="badges">
                                                             <?php if(!empty($product->preco->porcentagem_desconto)): ?>
-                                                                <span class="sale">-<?= $product->preco->porcentagem_desconto ?>%</span>
+                                                                <span class="sale" style="z-index: 99;>-<?= $product->preco->porcentagem_desconto ?>%</span>
                                                             <?php endif; ?>
                                                             <?php if ($product->created->format('Y-m')): ?>
-                                                                <span class="new">Novo</span></span>
+                                                                <span class="new" style="z-index: 99;">Novo</span></span>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                         <div class="thumb">
