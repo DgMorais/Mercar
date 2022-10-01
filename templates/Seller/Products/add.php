@@ -21,6 +21,7 @@
         text-align: center;
         font-size: 18px;
         background: #fff;
+        height: auto;
 
         /* Center slide text vertically */
         display: -webkit-box;
@@ -39,13 +40,13 @@
     .swiper-slide img {
         display: block;
         width: 100%;
-        height: 100%;
+        height: auto;
         object-fit: cover;
     }
 
     .swiper {
         width: 100%;
-        height: 300px;
+        height: auto;
         margin-left: auto;
         margin-right: auto;
     }
@@ -117,14 +118,12 @@
                                 ) ?>
                             </div>
                             <div class="load-images d-none">
-                                <div class="swiper-slider-container swiper swiper-one swiper-container mt-20px zoom-thumbs slider-nav-style-1 small-nav">
+                                <div class="swiper">
                                     <div class="swiper-wrapper">
                                     </div>
                                     <!-- Add Arrows -->
-                                    <div class="swiper-buttons">
-                                        <div class="swiper-button-next"></div>
-                                        <div class="swiper-button-prev"></div>
-                                    </div>
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
                                 </div>
                             </div>
                         </div>
@@ -347,53 +346,39 @@
     function showImages() {
         var input = document.getElementById('images')
         if (input.files.length != 0) {
-            readUrl(input, $('#main-image'), 0);
             for (i=0; i<=input.files.length; i++) {
-                let wrapper = $('.swiper-slider-container').children('.swiper-wrapper')
-                let wrapper_two = $('.swiper-slider-container-two').children('.swiper-wrapper')
+                let wrapper = $('.swiper').children('.swiper-wrapper')
                 let div_slide = $('<div />', {
-                    class: 'swiper-slide'
-                });
-                let div_slide_two = $('<div />', {
-                    class: 'swiper-slide'
+                    class: 'swiper-slide d-flex'
                 });
                 let img_slide = $('<img />', {
                     class: 'img-responsive m-auto',
                     style: 'width: 500px;',
                 });
-                let img_slide_two = $('<img />', {
-                    class: 'img-responsive m-auto',
-                    style: 'width: 180px;',
-                });
-                if (i == 0) {
-                    div_slide.addClass('swiper-slide-active');
-                    div_slide_two.addClass('swiper-slide-active');
-                }
                 readUrl(input, img_slide, i);
-                readUrl(input, img_slide_two, i);
                 let last_element = wrapper.children().last();
                 div_slide.append(img_slide)
-                div_slide_two.append(img_slide_two)
                 wrapper.append(div_slide)
-                wrapper_two.append(div_slide_two)
                 $('.load-images').removeClass('d-none');
             }
-            const swiper = new Swiper('.swiper-one', {
-                // Optional parameters
-                direction: 'horizontal',
-                spaceBetween: 5,
-
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-
-                thumbs: {
-                    swiper: swiper,
-                },
-            });
         }
+
+        const swiper = new Swiper('.swiper', {
+            // Optional parameters
+            slidesPerView: 1,
+            loop: true,
+            direction: 'horizontal',
+            loop: true,
+            loopFillGroupWithBlank: true,
+
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        swiper.init();
     }
 
     function readUrl(input, tag, image) {

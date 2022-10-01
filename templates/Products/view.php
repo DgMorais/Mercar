@@ -326,7 +326,6 @@
         'products' => $products,
     ]
 )?>
-<?=$this->Html->script('swiper-bundle.min')?>
 <script>
     const swiper = new Swiper('.swiper', {
         // Optional parameters

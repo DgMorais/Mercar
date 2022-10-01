@@ -1,28 +1,3 @@
-<style>
-    .carousel-control-next,
-    .carousel-control-prev /*, .carousel-indicators */ {
-        filter: invert(100%);
-    }
-    #carouselControls {
-        width: 18%;
-        min-height: 160px;
-        max-height: 160px;
-    }
-    .list-group-item {
-        height: 180px;
-    }
-    .image-not-found, .image-product {
-        width: 18%;
-        min-height: 140px;
-        max-height: 140px;
-    }
-    #product-description {
-        white-space: nowrap; 
-        width: 40em; 
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-</style>
 <div class="main-wrapper">
     <div class="container p-2">
         <ul class="nav nav-tabs justify-content-center">
@@ -61,10 +36,10 @@
                             <div class="list-group-item border rounded flex-column align-items-start my-2">
                                 <div class="w-100 d-flex">
                                     <?php if(!empty($product->images)) : ?>
-                                        <div id="carouselControls" class="carousel slide border rounded alig-items-center p-2 mx-2" data-ride="carousel">
-                                            <div class="carousel-inner">
+                                        <div class="swiper m-3" style="height: 300px; width: 350px;">
+                                            <div class="swiper-wrapper">
                                                 <?php foreach(json_decode($product->images) as $image) : ?>
-                                                    <div class="carousel-item">
+                                                    <div class="swiper-slide d-flex">
                                                         <?= $this->Html->image($image,
                                                             [
                                                                 'pathPrefix' => "/mercar/img/uploads/products/{$store->id}/",
@@ -74,6 +49,10 @@
                                                     </div>
                                                 <?php endforeach; ?>
                                             </div>
+
+                                            <!-- If we need navigation buttons -->
+                                            <div class="swiper-button-prev"></div>
+                                            <div class="swiper-button-next"></div>
                                         </div>
                                     <?php else: ?>
                                         <?= $this->Html->image('not-found/imagem-nao-cadastrada.jpg',
@@ -156,11 +135,24 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-        document.querySelectorAll('.list-group-item > div > #carouselControls > .carousel-inner').forEach((element, i) => {
-            var childrens = Array.from(element.children)
-            childrens[0].classList.add("active");
-        })
-        $('.carousel').carousel();
-    })
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        slidesPerView: 1,
+        loop: true,
+        direction: 'horizontal',
+        loop: true,
+        loopFillGroupWithBlank: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
 </script>

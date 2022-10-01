@@ -179,7 +179,7 @@
                                                             <div class="content">
                                                                 <span class="category"><a href="#"><?= $product->category->nome ?></a></span>
                                                                 <h5 class="title">
-                                                                    <a href="single-product.html"><?= $product->nome ?></a>
+                                                                    <a href=<?= "/products/{$product->slug}" ?>><?= $product->nome ?></a>
                                                                 </h5>
                                                                 <p><?= $product->descricao ?></p>
                                                             </div>
@@ -350,7 +350,6 @@
         ]
     ) ?>
 <?php endif; ?>
-<?=$this->Html->script('swiper-bundle.min')?>
 <script>
     const swiper = new Swiper('.swiper', {
         // Optional parameters
