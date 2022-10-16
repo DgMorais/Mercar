@@ -40,7 +40,8 @@
             '/js/vendor/jquery-3.6.0.min.js',
             '/js/plugins/mailchimp-ajax.js',
             '/js/plugins/jquery.mask.min.js',
-            '/js/flash-notification.js'
+            '/js/flash-notification.js',
+            '/js/default.js'
         ]
     ) ?>
 </head>

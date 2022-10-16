@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace App\Controller\Seller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -56,8 +57,32 @@ class UsersController extends AppController
             )
             ->toArray();
 
+        $store_ids = [];
+        foreach($stores as $store) {
+            array_push($store_ids, $store->id);
+        }
+
+        $this->UserRequests = TableRegistry::getTableLocator()->get('UserRequests');
+
+        $requests = $this->UserRequests->find()
+            ->where(
+                [
+                    'OR' => [
+                        ['Products.user_id' => $user_logged->id],
+                        ['Products.user_id IN (' . implode(',',$store_ids) . ')']
+                    ]
+                ]
+            )
+            ->contain('Sales.Cupons')
+            ->contain('Products');
+
         if (!empty($stores)) {
             $this->set(compact('stores'));
+        }
+        
+        if (!empty($requests)) {
+            $requests = $this->paginate($requests, ['limit' => 2, 'order' => ['requests.id' => 'desc']]);
+            $this->set(compact('requests'));
         }
 
         $this->set(compact('user', 'user_logged'));

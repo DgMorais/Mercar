@@ -66,7 +66,7 @@ class SalesTable extends Table
         
         $this->belongsTo('Cupons', [
             'foreignKey' => 'cupom_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
         ]);
 
         $this->belongsTo('PaymentsQueue', [

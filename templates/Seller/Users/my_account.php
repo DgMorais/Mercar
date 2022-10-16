@@ -62,8 +62,7 @@
                         <ul role="tablist" class="nav flex-column dashboard-list">
                             <li><a href="#account-details" data-bs-toggle="tab" class="nav-link active" onclick="alteraUrl('')">Detalhes da Conta</a></li>
                             <li><a href="#stores" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('stores')">Minhas Lojas</a></li>
-                            <li> <a href="#orders" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('orders')">Vendas</a></li>
-                            <li> <a href="#orders" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('requests')">Pedidos</a></li>
+                            <li> <a href="#requests" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('requests')">Pedidos</a></li>
                             </li>
                             <li>
                                 <?= $this->Html->link('Logout',
@@ -269,10 +268,25 @@
                                                     <td><?= $store->status ? 'Ativa' : 'Desativada' ?></td>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center mt-1">
-                                                            <?= $this->Html->link('Ver loja',
-                                                                ['controller' => 'Stores', 'action' => 'view', $store->id],
+                                                            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'Stores', 'action' => 'view', $store->id],
                                                                 [
-                                                                    'class' => 'btn btn-link view-store'
+                                                                    'id' => 'view-icon',
+                                                                    'escape'=>false,
+                                                                    'class'=>'btn-lg py-0',
+                                                                    'data-placement'=>'top',
+                                                                    'data-toggle'=>'popover',
+                                                                    'data-trigger' => 'hover',
+                                                                    'data-content'=> 'Ver'
+                                                                ]
+                                                            ) ?>
+                                                            <?= $this->Html->link('<i class="fa fa-edit"></i>', ['controller' => 'Stores', 'action' => 'edit', $store->id], 
+                                                                [
+                                                                    'id' => 'edit-icon',
+                                                                    'escape'=>false,
+                                                                    'class'=>'btn-lg py-0',
+                                                                    'data-placement'=>'top',
+                                                                    'data-toggle'=>'popover',
+                                                                    'data-content'=> 'Editar'
                                                                 ]
                                                             ) ?>
                                                         </div>
@@ -284,233 +298,48 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="orders">
-                            <h4>Compras</h4>
+                        <div class="tab-pane fade" id="requests">
+                            <h4>Pedidos</h4>
                             <div class="table_page table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Compras</th>
-                                            <th>Data da compra</th>
-                                            <th>Status</th>
-                                            <th>Total</th>
-                                            <th>Ações</th>
+                                            <th><?= $this->Paginator->sort('id', 'N.º') ?></th>
+                                            <th><?= $this->Paginator->sort('liberado', 'Status') ?></th>
+                                            <th><?= $this->Paginator->sort('valor', 'Valor') ?></th>
+                                            <th><?= $this->Paginator->sort('created', 'Data do pedido') ?></th>
+                                            <th class="actions"><?= __('Ações') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach($user->sales as $sale) :  ?>
+                                        <?php foreach($requests as $request) : ?>
                                             <tr>
-                                                <td><?= $sale->id ?></td>
-                                                <td><?= $sale->created ?></td>
-                                                <td><span class="success"><?= $sale->status_pagamento ?></span></td>
-                                                <td>R$ <?= number_format($sale->valor_final, 2, ',', '.') ?></td>
+                                                <td><?= $request->id ?></td>
+                                                <td><?= $request->liberado ? 'Pago' : 'Pagamento pendente' ?></td>
+                                                <td>R$ <?= number_format($request->valor, 2, ',', '.') ?></td>
+                                                <td><?= $request->created ?></td>
                                                 <td>
-                                                    <div class="d-flex justify-content-center">
-                                                        <button href="#" class="view-sale btn btn-link" data-toggle="modal" onclick="seeSale(<?= $sale->id ?>)" data-target=".bd-example-modal-xl">Ver</button>
+                                                    <div class="d-flex justify-content-center align-items-center mt-1">
+                                                        <button href="#" class="view-sale btn btn-link" data-toggle="modal" onclick="seeRequest(<?= $request->id ?>)" data-target=".bd-example-modal-xl">Ver pedido</button>
                                                     </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade px-2" id="address">
-                            <p>Os endereços a seguir também serão exibidos ​​na página de checkout.</p>
-                            <?php if (!empty($endereco_padrao)): ?>
-                                <h5 class="billing-address mb-3">Endereço Padrão</h5>
-                                <p class="mb-2"><strong>Destinatario:</strong> <?= $endereco_padrao->destinatario ?></p>
-                                <address class="mb-5">
-                                    <span class="mb-1 d-inline-block"><strong>CEP:</strong> <?= $endereco_padrao->cep ?></span>
-                                    <br>
-                                    <span class="mb-1 d-inline-block"><strong>Rua:</strong> <?= $endereco_padrao->rua ?></span>
-                                    <br>
-                                    <span class="mb-1 d-inline-block"><strong>Número:</strong> <?= $endereco_padrao->numero ?></span>
-                                    <br>
-                                    <span class="mb-1 d-inline-block"><strong>Complemento:</strong> <?= $endereco_padrao->complemento ?></span>
-                                    <br>
-                                    <span class="mb-1 d-inline-block"><strong>Bairro:</strong> <?= $endereco_padrao->bairro ?></span>
-                                    <br>
-                                    <span class="mb-1 d-inline-block"><strong>Cidade:</strong> <?= $endereco_padrao->cidade ?></span>
-                                    <br>
-                                    <span class="mb-1 d-inline-block"><strong>Estado:</strong> <?= $endereco_padrao->estado ?></span>
-                                </address>
-                            <?php endif; ?>
-                            <div class="row pb-2">
-                                <h5 class="billing-address mb-3">Endereços Cadastrados</h5>                                    
-                            </div>
-                            <div class="table_page table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>CEP</th>
-                                            <th>Rua</th>
-                                            <th>Número</th>
-                                            <th>Bairro</th>
-                                            <th>Cidade</th>
-                                            <th>Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($enderecos as $endereco) :?>
-                                            <?= $this->Form->create(null,
-                                                [
-                                                    'url' => ['controller' => 'Users', 'action' => 'defineDefaultAddress', 'prefix' => 'client']
-                                                ]
-                                            ); ?>
-                                                <tr>
-                                                    <td class="px-0"><?= $endereco->cep ?></td>
-                                                    <td class="px-0"><?= $endereco->rua ?></td>
-                                                    <td class="px-0"><?= $endereco->numero ?></td>
-                                                    <td class="px-0"><?= $endereco->bairro ?></td>
-                                                    <td class="px-0"><?= $endereco->cidade ?></td>
-                                                    <td class="px-0">
-                                                        <?= $this->Form->control('id',
-                                                            [
-                                                                'label' => false,
-                                                                'class' => 'd-none',
-                                                                'value' => $endereco->id
-                                                            ]
-                                                        ) ?>
-                                                        <?= $this->Form->button('Escolher',
-                                                            [
-                                                                'class' => 'btn-link',
-                                                                'type' => 'submit'
-                                                            ]
-                                                        ) ?>
-                                                    </td>
-                                                </tr>
-                                            <?= $this->Form->end() ?>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="d-flex flex-row-reverse">
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                                    <a href="#add-address" data-bs-toggle="tab" class="btn btn-info p-2 p-md-2 text-nowrap cadastro-endereco nav-link">Cadastrar Endereço</a>
+                                <div class="text-center">
+                                    <div class="paginator">
+                                        <ul class="pagination" style="justify-content: center;">
+                                            <?= $this->Paginator->first('<< ' . __('first')) ?>
+                                            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                                            <?= $this->Paginator->numbers() ?>
+                                            <?= $this->Paginator->next(__('next') . ' >') ?>
+                                            <?= $this->Paginator->last(__('last') . ' >>') ?>
+                                        </ul>
+                                        <p><?= $this->Paginator->counter(__('Página {{page}} de {{pages}}, exibindo {{current}} registro(s) de um total de {{count}}')) ?></p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="add-address">
-                            <h4>Cadastrar Endereço</h4>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="billing-address mb-3">Endereços</h5>
-                                <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
-                                    <ul role="tablist" class="nav flex-column dashboard-list">
-                                        <a href="#address" data-bs-toggle="tab" class="btn-warning cadastro-endereco nav-link">Voltar</a>
-                                    </ul>
-                                </div>
-                            </div>
-                            <?= $this->Form->create($add_endereco,
-                                [
-                                    'url' => ['controller' => 'Users', 'action' => 'addAddress', 'prefix' => 'client']
-                                ]
-                            ); ?>
-                                <div class="default-form-box mb-20">
-                                    <label>CEP</label>
-                                    <?= $this->Form->control('cep',
-                                        [
-                                            'label' => false,
-                                            'class' => 'form-control w-50',
-                                            'type' => 'text',
-                                            'placeholder' => __('CEP'),
-                                            'aria-label' => __('CEP'),
-                                            'required' => true
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Rua</label>
-                                    <?= $this->Form->control('rua',
-                                        [
-                                            'label' => false,
-                                            'class' => 'form-control w-50',
-                                            'type' => 'text',
-                                            'placeholder' => __('Rua'),
-                                            'aria-label' => __('Rua'),
-                                            'required' => true
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Número</label>
-                                    <?= $this->Form->control('numero',
-                                        [
-                                            'label' => false,
-                                            'type' => 'text',
-                                            'class' => 'form-control w-50',
-                                            'placeholder' => __('Número'),
-                                            'aria-label' => __('Número'),
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Complemento</label>
-                                    <?= $this->Form->control('complemento',
-                                        [
-                                            'label' => false,
-                                            'type' => 'text',
-                                            'id' => 'data_nascimento',
-                                            'class' => 'form-control w-50',
-                                            'placeholder' => __('Complemento'),
-                                            'aria-label' => __('Complemento'),
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Bairro</label>
-                                    <?= $this->Form->control('bairro',
-                                        [
-                                            'label' => false,
-                                            'type' => 'text',
-                                            'class' => 'form-control w-50',
-                                            'placeholder' => __('Bairro'),
-                                            'aria-label' => __('Bairro'),
-                                            'required' => true
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Cidade</label>
-                                    <?= $this->Form->control('cidade',
-                                        [
-                                            'label' => false,
-                                            'type' => 'text',
-                                            'class' => 'form-control w-50',
-                                            'placeholder' => __('Cidade'),
-                                            'aria-label' => __('Cidade'),
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Estado</label>
-                                    <?= $this->Form->control('estado',
-                                        [
-                                            'label' => false,
-                                            'type' => 'select',
-                                            'class' => 'form-control w-50',
-                                            'placeholder' => __('Estado'),
-                                            'aria-label' => __('Estado'),
-                                            'required' => true,
-                                            'empty' => "Selecione...",
-                                            'options' => [
-                                                'RJ' => "RJ",
-                                                'SP' => "SP"
-                                            ]
-                                        ]
-                                    ); ?>
-                                </div>
-                                <div class="save_button mt-4 rounded">
-                                    <?= $this->Form->button(__('Salvar'),
-                                        [
-                                            'submitButton' => 'true',
-                                            'message-redirect' => __('Aguarde...') . ' <i class="fas fa-spinner fa-pulse"></i>',
-                                            'escape' => true,
-                                            'class' => 'btn'
-                                        ]
-                                    ); ?>
-                                </div>
-                            <?= $this->Form->end(); ?>
                         </div>
                     </div>
                 </div>
@@ -550,11 +379,11 @@
             $("#stores").addClass("show active");
             $("a[href='#account-details']").removeClass("active");
             $("a[href='#stores']").addClass("active");
-        } else if (url.match(regex) == '?orders') {
+        } else if (url.match(regex) == '?requests') {
             $("#account-details").removeClass("show active");
-            $("#orders").addClass("show active");
+            $("#requests").addClass("show active");
             $("a[href='#account-details']").removeClass("active");
-            $("a[href='#orders']").addClass("active");
+            $("a[href='#requests']").addClass("active");
         }
         $("#data_nascimento").mask('00/00/0000');
         $("#cep").mask('00000-000');
@@ -581,12 +410,12 @@
     });
 
     function seeRequest(request_id) {
-        let sale = <?= json_encode($user->sales) ?>;
-        if (sale != null) {
-            $.each(sale, function(index, value) {
-                if (value.id == sale_id) {
+        let request = <?= json_encode($requests) ?>;
+        if (request != null) {
+            $.each(request, function(index, value) {
+                if (value.id == request_id) {
                     $('.modal-title').html('');
-                    $('.modal-title').html('Compra Número #' + value.id);
+                    $('.modal-title').html('Pedido Número #' + value.id);
 
                     let body = $('.modal-body');
                     body.html('');
@@ -599,55 +428,49 @@
                     let thead_products = '<thead>\
                                             <tr>\
                                                 <th></th>\
-                                                <th>Nome</th>\
-                                                <th>Descrição</th>\
+                                                <th>Produto</th>\
+                                                <th>Quantidade</th>\
                                                 <th>Valor</th>\
-                                                <th>Loja/Vendedor</th>\
+                                                <th>Status</th>\
                                             </tr>\
                                         </thead>'
                     table_products.append(thead_products);
                     let tbody_products = $('<tbody />');
                     
-                    $.each(value.user_requests, function(i, element) {
-                        if (element.product.store_id != null) {
-                            var vendedor = element.product.store;
-                        } else {
-                            var vendedor = element.product.user
-                        }
-                        let tr_tbody_product = `\<tr>\
-                                                    <td>${element.product.images}</td>\
-                                                    <td>${element.product.nome}</td>\
-                                                    <td>${element.product.descricao}</td>\
-                                                    <td>${(parseFloat(element.valor)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>\
-                                                    <td>${vendedor.nome}</td>\
-                                                </tr>`;
-                        tbody_products.append(tr_tbody_product);
-                    })
+                    let tr_tbody_product = `\<tr>\
+                                                <td>images</td>\
+                                                <td>${value.product.nome}</td>\
+                                                <td class="py-4">1</td>\
+                                                <td class="py-4">${(parseFloat(value.valor)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>\
+                                                ${value.liberado ? '<td class="py-4">Pago</td>' : '<td>Pagamento pendente</td>'}\
+                                            </tr>`;
+                    tbody_products.append(tr_tbody_product);
+
                     let div_sales_data = $('<div />', {
                         class: 'd-flex justify-content-between'
                     })
                     let div_cupom = $('<div />', {
                         class: 'border rounded col-4 p-3'
                     })
-                    if (value.cupom_id != null) {
+                    if (value.sale.cupom_id != null) {
                         var has_cupom = true;
-                        if (value.cupon.tipo_desconto == 1) {
-                            var desconto = value.cupon.valor_real
+                        if (value.sale.cupon.tipo_desconto == 1) {
+                            var desconto = value.sale.cupon.valor_real
                             var valor_desconto = (value.valor - value.cupon.valor_real)
                         } else {
-                            var desconto = `${value.cupon.valor_porcentagem}%`
-                            var valor_desconto = ((value.cupon.valor_porcentagem/100) * value.valor)
+                            var desconto = `${value.sale.cupon.valor_porcentagem}%`
+                            var valor_desconto = ((value.sale.cupon.valor_porcentagem/100) * value.valor)
                         }
                         let div_interna_cupom = `<div class="text-center">
                                                     <h6 class="text-center"><strong>Cupom</strong></h6><hr>
                                                     <p><strong>Código do cupom utilizado</strong></p>
-                                                    <p class="text-danger">${value.cupon.codigo}</p>
+                                                    <p class="text-danger">${value.sale.cupon.codigo}</p>
                                                     <p><strong>Desconto aplicado:</strong> ${desconto}</p>
                                                 </div>`;
                         div_cupom.append(div_interna_cupom);
                         div_sales_data.append(div_cupom);
                     }
-                    let valor_parcelas = (value.valor_final/value.parcelas)
+                    let valor_parcelas = (value.sale.valor_final/value.sale.parcelas)
                     let div_sale_values = $('<div />', {
                         class: 'border rounded col-7 p-3'
                     })
@@ -655,14 +478,13 @@
                                                         <h6 class="text-center"><strong>Dados da compra</strong></h6><hr>
                                                         <div class="d-flex justify-content-between">
                                                             <div class="text-center col-6" style="border-right: 1px solid #DCDCDC;">
-                                                                <p><strong>Cartão:</strong> **** **** **** 1524</p>
-                                                                <p><strong>Parcelas:</strong> ${value.parcelas} x  ${valor_parcelas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </p>
-                                                                <p><strong>Status:</strong> ${value.liberado ? 'Liberado' : 'Não liberado'} </p>
+                                                                <p><strong>Parcelas:</strong> ${value.sale.parcelas} x  ${valor_parcelas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </p>
+                                                                <p><strong>Status:</strong> ${value.liberado ? 'Pago' : 'Pagamento pendente'} </p>
                                                             </div>
                                                             <div class="text-center col-6">
                                                                 <p><strong>Subtotal:</strong> ${(parseFloat(value.valor)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>
                                                                 ${has_cupom ? `<p class="text-danger"><strong>Desconto:</strong> - ${(parseFloat(valor_desconto)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>` : '' }
-                                                                <p><strong>Total:</strong> ${(parseFloat(value.valor_final)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>
+                                                                <p><strong>Total:</strong> ${(parseFloat(value.sale.valor_final)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</p>
                                                             </div>
                                                         </div>
                                                     </div>`;

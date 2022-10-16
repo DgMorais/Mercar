@@ -601,9 +601,9 @@
                             var vendedor = element.product.user
                         }
                         let tr_tbody_product = `\<tr>\
-                                                    <td>${element.product.images}</td>\
-                                                    <td>${element.product.nome}</td>\
-                                                    <td>${element.product.descricao}</td>\
+                                                    <td>images</td>\
+                                                    <td >${element.product.nome}</td>\
+                                                    <td style="max-width: 800px;"><p style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${element.product.descricao}</p></td>\
                                                     <td>${(parseFloat(element.valor)).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>\
                                                     <td>${vendedor.nome}</td>\
                                                 </tr>`;
