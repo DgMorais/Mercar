@@ -68,10 +68,13 @@ class SalesController extends AppController
                     );
                     $sale->id_pagseguro = $request['id'];
                     $sale->status_pagseguro = $request['status'];
+                    foreach ($sale->user_requests as $request) {
+                        $request->liberado = true;
+                    }
                     if ($sale->status_pagamento == 'Pago') {
                         $sale->liberado = true;
                     }
-                    if ($this->Sales->save($sale)) {
+                    if ($this->Sales->save($sale, ['contain' => 'UserRequests'])) {
                         return $this->response->withStatus(200);
                     }
                 }

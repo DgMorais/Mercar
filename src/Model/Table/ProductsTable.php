@@ -61,7 +61,7 @@ class ProductsTable extends Table
         ]);
         $this->belongsTo('Categories', [
             'foreignKey' => 'category_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
         ]);
         $this->hasMany('UserRequests', [
             'foreignKey' => 'product_id',
@@ -133,14 +133,14 @@ class ProductsTable extends Table
         return $rules;
     }
 
-    public function searchProducts($values)
+    public function searchProducts($values, $user_id = null)
     {
         $products = $this->find()
             ->where(
                 [
                     "Products.nome REGEXP '{$values}'",
                     'Products.status' => 1,
-                    
+                    'Stores.status' => 1
                 ]
             )
             ->contain('Precos')
@@ -148,6 +148,13 @@ class ProductsTable extends Table
             ->contain('Stores')
             ->contain('ProductInformation')
             ->contain('Categories');
+        if ($user_id) {
+            $products->where(
+                [
+                    'Products.user_id != ' . $user_id
+                ]
+            );
+        }
 
         return $products;
     }

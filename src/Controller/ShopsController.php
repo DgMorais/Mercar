@@ -35,9 +35,11 @@ class ShopsController extends AppController
             $this->loadModel('Products');
             if (!empty($this->Authentication->getIdentity())) {
                 $user_logged = $this->Authentication->getIdentity();
+                $products = $this->Products->searchProducts($this->request->getQuery('search'), $user_logged->id);
+            } else {
+                $products = $this->Products->searchProducts($this->request->getQuery('search'));
             }
 
-            $products = $this->Products->searchProducts($this->request->getQuery('search'));
             $products_cart = $this->getRequest()->getSession()->read('carrinho');
 
             $this->set('products', $this->Paginator->paginate($products, $this->config));

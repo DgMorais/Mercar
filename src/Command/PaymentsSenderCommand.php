@@ -125,13 +125,16 @@ class PaymentsSenderCommand extends Command
                                 $payment->status = $this->PaymentsQueue::RESEND_PAYMENT;
                                 $this->PaymentsQueue->save($payment);
                             } else {
+                                $payment->response = json_encode($response);
+                                $payment->errors = "Número máximo de tentativas excedidas";
+                                $this->PaymentsQueue->save($payment);
                                 $routine->status = RoutinesTable::ROUTINE_ERROR;
                                 $routine->end = new \DateTime();
                                 $this->Routines->save($routine);
                             }
                         }
                     } catch (\Exception | \Error $e) {
-                        $payment->errors .= "Erro: Tentativa {$payment->tries} - " . $e->getMessage();
+                        $payment->errors = "Erro: Tentativa {$payment->tries} - " . $e->getMessage();
                         if($payment->tries >= 2){
                             $payment->status = $this->PaymentsQueue::PAYMENT_ERROR;
                         } else {
@@ -139,7 +142,7 @@ class PaymentsSenderCommand extends Command
                         }
                         $this->PaymentsQueue->save($payment);
                     } finally{
-                        if($payment->tries >= 2 && $payment->status == $this->PaymentsQueue::PROCESSING_PAYMENT){
+                        if($payment->tries >= 2 && $payment->status == $this->PaymentsQueue::PROCESSING_PAYMENT) {
                             $payment->status = $this->PaymentsQueue::PAYMENT_ERROR;
                             $this->PaymentsQueue->save($payment);
                         }

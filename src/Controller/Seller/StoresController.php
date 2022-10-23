@@ -62,17 +62,15 @@ class StoresController extends AppController
         }
     }
 
-    public function edit($id = null)
+    public function editStore($id = null)
     {
-        $store = $this->Store->get($id, [
-            'contain' => [],
-        ]);
+        $store = $this->Stores->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $store = $this->Store->patchEntity($store, $this->request->getData());
-            if ($this->Store->save($store)) {
+            $store = $this->Stores->patchEntity($store, $this->request->getData());
+            if ($this->Stores->save($store)) {
                 $this->Flash->success(__('The store has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect('/seller/my-account?stores');
             }
             $this->Flash->error(__('The store could not be saved. Please, try again.'));
         }

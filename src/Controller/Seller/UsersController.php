@@ -47,7 +47,14 @@ class UsersController extends AppController
     {
         $user_logged = $this->Authentication->getIdentity();
 
-        $user = $this->Users->get($user_logged->id);
+        $user = $this->Users->find()
+            ->where(
+                [
+                    'id' => $user_logged->id
+                ]
+            )
+            ->contain('Enderecos')
+            ->first();
 
         $stores = $this->Users->Stores->find()
             ->where(
@@ -56,6 +63,21 @@ class UsersController extends AppController
                 ]
             )
             ->toArray();
+
+        $sales = $this->Users->Sales->find()
+            ->where(
+                [
+                    'user_id' => $user_logged->id
+                ]
+            )
+            ->contain('UserRequests.Products.Users.Stores')
+            ->contain('Cupons');
+
+        $list_sales = $sales->toArray();
+        if (!empty($list_sales)) {
+            $sales = $this->paginate($sales, ['limit' => 1, 'order' => ['created' => 'desc']]);
+            $this->set(compact('sales', 'list_sales'));
+        }
 
         $store_ids = [];
         foreach($stores as $store) {
@@ -81,7 +103,7 @@ class UsersController extends AppController
         }
         
         if (!empty($requests)) {
-            $requests = $this->paginate($requests, ['limit' => 2, 'order' => ['requests.id' => 'desc']]);
+            $requests = $this->paginate($requests, ['limit' => 3, 'order' => ['created' => 'desc']]);
             $this->set(compact('requests'));
         }
 

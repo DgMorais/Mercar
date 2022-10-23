@@ -92,22 +92,6 @@ class UsersController extends AppController
                 ]
             )
             ->contain('Enderecos')
-            ->contain(
-                [
-                    'Sales' => function ($q) {
-                        return $q->contain(
-                        [
-                            'UserRequests.Products' => function ($q) 
-                                {
-                                    return $q->contain('Users')
-                                        ->contain('Stores');
-                                }
-                        ])
-                        // ->contain('Cupons')
-                        ->order(['Sales.created' => 'DESC']);
-                    }
-                ]
-            )
             ->first();
 
         if (!empty($user->endereco_padrao)) {
@@ -127,6 +111,21 @@ class UsersController extends AppController
 
         if (!empty($user->data_nascimento)) {
             $user->data_nascimento = date_format($user->data_nascimento, 'd/m/Y');
+        }
+
+        $sales = $this->Users->Sales->find()
+            ->where(
+                [
+                    'user_id' => $user_logged->id
+                ]
+            )
+            ->contain('UserRequests.Products.Users.Stores')
+            ->contain('Cupons');
+
+        $list_sales = $sales->toArray();
+        if (!empty($list_sales)) {
+            $sales = $this->paginate($sales, ['limit' => 2, 'order' => ['created' => 'desc']]);
+            $this->set(compact('sales', 'list_sales'));
         }
 
         $this->set(compact('user', 'user_logged', 'enderecos', 'endereco_padrao', 'add_endereco'));

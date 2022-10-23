@@ -60,10 +60,14 @@
                     <!-- Nav tabs -->
                     <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
                         <ul role="tablist" class="nav flex-column dashboard-list">
+                            <h5 class="text-center">Cliente</h5>
                             <li><a href="#account-details" data-bs-toggle="tab" class="nav-link active" onclick="alteraUrl('')">Detalhes da Conta</a></li>
+                            <li><a href="#orders" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('orders')">Compras</a></li>
+                            <hr>
+                            <h5 class="text-center">Vendedor</h5>
                             <li><a href="#stores" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('stores')">Minhas Lojas</a></li>
                             <li> <a href="#requests" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('requests')">Pedidos</a></li>
-                            </li>
+                            </li><br>
                             <li>
                                 <?= $this->Html->link('Logout',
                                     '/logout',
@@ -231,6 +235,11 @@
                                 </div>
                             <?= $this->Form->end(); ?>
                         </div>
+                        <?= $this->element('orders/list_orders', 
+                            [
+                                'group' => 'client'
+                            ]
+                        ) ?>
                         <div class="tab-pane fade" id="stores">
                             <div class="row">
                                 <div class="col-9">
@@ -265,7 +274,7 @@
                                                 <tr>
                                                     <td><?= $store->nome ?></td>
                                                     <td><?= $store->cnpj ? $store->cnpj : '-' ?></td>
-                                                    <td><?= $store->status ? 'Ativa' : 'Desativada' ?></td>
+                                                    <td><?= $store->status ? 'Ativa' : 'Inativa' ?></td>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center mt-1">
                                                             <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'Stores', 'action' => 'view', $store->id],
@@ -279,7 +288,7 @@
                                                                     'data-content'=> 'Ver'
                                                                 ]
                                                             ) ?>
-                                                            <?= $this->Html->link('<i class="fa fa-edit"></i>', ['controller' => 'Stores', 'action' => 'edit', $store->id], 
+                                                            <?= $this->Html->link('<i class="fa fa-edit"></i>', ['controller' => 'Stores', 'action' => 'editStore', $store->id], 
                                                                 [
                                                                     'id' => 'edit-icon',
                                                                     'escape'=>false,
@@ -327,18 +336,58 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <div class="text-center">
-                                    <div class="paginator">
-                                        <ul class="pagination" style="justify-content: center;">
-                                            <?= $this->Paginator->first('<< ' . __('first')) ?>
-                                            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-                                            <?= $this->Paginator->numbers() ?>
-                                            <?= $this->Paginator->next(__('next') . ' >') ?>
-                                            <?= $this->Paginator->last(__('last') . ' >>') ?>
-                                        </ul>
-                                        <p><?= $this->Paginator->counter(__('Página {{page}} de {{pages}}, exibindo {{current}} registro(s) de um total de {{count}}')) ?></p>
+                                <?php if (!empty($requests->toArray())): ?>
+                                    <div class="text-center">
+                                        <div class="paginator">
+                                            <ul class="pagination" style="justify-content: center;">
+                                                <?php if ($this->Paginator->counter(__('{{page}}')) > 1) : ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href=<?= "/seller/my-account?requests&page=1" ?> title="first <<">
+                                                            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                                <?php if ($this->Paginator->counter(__('{{page}}')) != 1) : ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href=<?= "/seller/my-account?requests&page=" . (intval($this->Paginator->counter(__('{{page}}'))) - 1) ?> title="previous >">
+                                                            <span aria-hidden="true">
+                                                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                                <?php for ($page = 1; $page <= $this->Paginator->counter(__('{{pages}}')); $page++) : ?>
+                                                    <?php if(intval($this->Paginator->counter(__('{{page}}'))) == $page) : ?>
+                                                        <li class="page-item active">
+                                                    <?php else: ?>
+                                                        <li class="page-item">
+                                                    <?php endif; ?>
+                                                        <a class="page-link" href=<?= "/seller/my-account?requests&page={$page}" ?>>
+                                                            <?= $page ?>
+                                                        </a>
+                                                    </li>
+                                                <?php endfor; ?>
+                                                <?php if (!isset($_REQUEST['page']) || $this->Paginator->counter(__('{{pages}}')) != $_REQUEST['page']) : ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href=<?= "/seller/my-account?requests&page=" . (intval($this->Paginator->counter(__('{{page}}'))) + 1) ?> title="next >">
+                                                            <span aria-hidden="true">
+                                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                                <?php if (!isset($_REQUEST['page']) || $this->Paginator->counter(__('{{pages}}')) != $_REQUEST['page']) : ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href=<?= "/seller/my-account?requests&page=" . $this->Paginator->counter(__('{{pages}}')) ?> title="last >>">
+                                                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                            </ul>
+                                            <p><?= $this->Paginator->counter(__('Página {{page}} de {{pages}}, exibindo {{current}} registro(s) de um total de {{count}}')) ?></p>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -347,22 +396,6 @@
         </div>
     </div>
     <!-- account area end -->
-</div>
-<div class="modal fade sale-modal-xl" tabindex="-1" role="dialog" aria-labelledby="modalSeeSale" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header p-2">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body p-2"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger p-3 close-modal" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div>
 <?= $this->Html->script(
     [
@@ -373,13 +406,17 @@
 <script>
     $(document).ready(function(){
         var url = "<?= $this->request->getRequestTarget() ?>";
-        var regex = /\?.+/;
-        if (url.match(regex) == '?stores') {
+        if (url.match(/stores/) == 'stores') {
             $("#account-details").removeClass("show active");
             $("#stores").addClass("show active");
             $("a[href='#account-details']").removeClass("active");
             $("a[href='#stores']").addClass("active");
-        } else if (url.match(regex) == '?requests') {
+        } else if (url.match(/orders/) == 'orders') {
+            $("#account-details").removeClass("show active");
+            $("#orders").addClass("show active");
+            $("a[href='#account-details']").removeClass("active");
+            $("a[href='#orders']").addClass("active");
+        } else if (url.match(/requests/) == 'requests') {
             $("#account-details").removeClass("show active");
             $("#requests").addClass("show active");
             $("a[href='#account-details']").removeClass("active");
