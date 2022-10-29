@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace App\View;
 
 use Cake\View\View;
+use CakeLte\View\CakeLteTrait;
 
 /**
  * Application View
@@ -26,6 +27,10 @@ use Cake\View\View;
  */
 class AppView extends View
 {
+    use CakeLteTrait;
+
+    public $layout = 'default';
+
     /**
      * Initialization hook method.
      *
@@ -37,8 +42,20 @@ class AppView extends View
      */
     public function initialize(): void
     {
-        $this->loadHelper('Paginator', ['templates' => 'paginator-templates']);
+        if (preg_match('/advanced-panel/', $this->request->getRequestTarget())) {
+            $this->layout = 'CakeLte.default';
+            $this->initializeCakeLte();
+        } else {
+            $this->layout = 'default';
+            $this->loadHelper('Paginator', ['templates' => 'paginator-templates']);
+        }
         $this->loadHelper('AssetMix.AssetMix');
+    }
 
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $layout = 'CakeLte.default';
     }
 }

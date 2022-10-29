@@ -109,4 +109,9 @@ class UsersController extends AppController
 
         $this->set(compact('user', 'user_logged'));
     }
+
+    public function advancedPanel()
+    {
+        
+    }
 }

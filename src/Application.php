@@ -74,6 +74,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $this->addPlugin('Authentication');
         $this->addPlugin('Search');
         $this->addPlugin('AssetMix');
+        $this->addPlugin('CakeLte');
     }
 
     /**

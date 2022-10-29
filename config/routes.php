@@ -65,8 +65,10 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/view-store/*', ['controller' => 'Stores', 'action' => 'view', 'prefix' => 'seller']);
         $builder->connect('/store-edit/*', ['controller' => 'Stores', 'action' => 'editStore', 'prefix' => 'seller']);
         $builder->connect('/add-product/*', ['controller' => 'Products', 'action' => 'add', 'prefix' => 'seller']);
+        $builder->connect('/edit-product/*', ['controller' => 'Products', 'action' => 'edit', 'prefix' => 'seller']);
         $builder->connect('/view-product/*', ['controller' => 'Products', 'action' => 'view', 'prefix' => 'seller']);
         $builder->connect('/delete-product/*', ['controller' => 'Products', 'action' => 'delete', 'prefix' => 'seller']);
+        $builder->connect('/advanced-panel', ['controller' => 'Users', 'action' => 'advancedPanel', 'prefix' => 'seller']);
 
         $builder->fallbacks(DashedRoute::class);
     });

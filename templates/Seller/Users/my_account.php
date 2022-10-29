@@ -67,6 +67,20 @@
                             <h5 class="text-center">Vendedor</h5>
                             <li><a href="#stores" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('stores')">Minhas Lojas</a></li>
                             <li> <a href="#requests" data-bs-toggle="tab" class="nav-link" onclick="alteraUrl('requests')">Pedidos</a></li>
+                            </li>
+                            <hr>
+                            <h5 class="text-center">Painel avançado</h5>
+                            <li>
+                                <?= $this->Html->link('Painel Avançado',
+                                    [
+                                        'controller' => 'Users',
+                                        'action' => 'advancedPanel',
+                                        'prefix' => 'seller'
+                                    ],
+                                    [
+                                        'class' => 'nav-link'
+                                    ]
+                                ) ?>
                             </li><br>
                             <li>
                                 <?= $this->Html->link('Logout',
@@ -277,7 +291,7 @@
                                                     <td><?= $store->status ? 'Ativa' : 'Inativa' ?></td>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center mt-1">
-                                                            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'Stores', 'action' => 'view', $store->id],
+                                                            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'Stores', 'action' => 'view', 'prefix' => 'seller', $store->id],
                                                                 [
                                                                     'id' => 'view-icon',
                                                                     'escape'=>false,

@@ -47,31 +47,34 @@
 </head>
 <body>
     <!-- Header Start -->
-    <?= $this->element('default/header') ?>
+    <?php if (!preg_match('/advanced-panel/', $this->request->getRequestTarget())) : ?>
+        <?= $this->element('default/header') ?>
+    <?php endif; ?>
     <!-- Header End -->
 
     <?= $this->Flash->render() ?>
     <?= $this->fetch('content') ?>
-    
-    <!-- offcanvas overlay start -->
-    <div class="offcanvas-overlay"></div>
-    <!-- offcanvas overlay end -->
+    <?php if (!preg_match('/advanced-panel/', $this->request->getRequestTarget())) : ?>
+        <!-- offcanvas overlay start -->
+        <div class="offcanvas-overlay"></div>
+        <!-- offcanvas overlay end -->
 
-    <!-- OffCanvas Menu Start -->
-    <?= $this->element('offcanvas/start_menu') ?>
-    <!-- OffCanvas Menu End -->
+        <!-- OffCanvas Menu Start -->
+        <?= $this->element('offcanvas/start_menu') ?>
+        <!-- OffCanvas Menu End -->
 
-    <!-- OffCanvas Wishlist Start -->
-    <?= $this->element('offcanvas/view_favoritos') ?>
-    <!-- OffCanvas Wishlist End -->
+        <!-- OffCanvas Wishlist Start -->
+        <?= $this->element('offcanvas/view_favoritos') ?>
+        <!-- OffCanvas Wishlist End -->
 
-    <!-- OffCanvas Cart Start -->
-    <?= $this->element('offcanvas/shopping_cart') ?>
-    <!-- OffCanvas Cart End -->
-    
-    <!-- Footer Start -->
-    <?= $this->element('default/footer') ?>
-    <!-- Footer End -->
+        <!-- OffCanvas Cart Start -->
+        <?= $this->element('offcanvas/shopping_cart') ?>
+        <!-- OffCanvas Cart End -->
+        
+        <!-- Footer Start -->
+        <?= $this->element('default/footer') ?>
+        <!-- Footer End -->
+    <?php endif; ?>
 
     <?= $this->Html->script(
         [
